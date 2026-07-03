@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NHL Premium - Liga Nacional de Hockey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!--<link rel="stylesheet" href="ui.css">-->
+
+    <style>
+        :root {
+            --fondo: #0a0f16;
+            --texto-principal: #f8fafc;
+            --texto-secundario: #94a3b8;
+            --acento-rojo: #e11422;
+            --acento-azul: #0033a0;
+            --fondo-cristal: rgba(255, 255, 255, 0.03);
+            --borde-cristal: rgba(255, 255, 255, 0.06);
+            --sombra: rgba(0, 0, 0, 0.4);
+        }
+
+        [data-tema="claro"] {
+            --fondo: #f4f6f9;
+            --texto-principal: #1e293b;
+            --texto-secundario: #64748b;
+            --acento-rojo: #d0101d;
+            --acento-azul: #002d90;
+            --fondo-cristal: rgba(0, 0, 0, 0.02);
+            --borde-cristal: rgba(0, 0, 0, 0.08);
+            --sombra: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Estilos Base y Animaciones */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto-principal);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 25px;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animar {
+            animation: aparecer 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Menú superior */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--fondo-cristal);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--borde-cristal);
+            z-index: 1000;
+            padding: 16px 0;
+        }
+
+        .navegacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logotipo {
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: var(--texto-principal);
+        }
+
+        .logotipo span { color: var(--acento-rojo); }
+
+        .enlaces {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .enlaces a {
+            color: var(--texto-secundario);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .enlaces a:hover {
+            color: var(--texto-principal);
+        }
+
+        .boton-tema {
+            background: var(--fondo-cristal);
+            border: 1px solid var(--borde-cristal);
+            color: var(--texto-principal);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Sección Principal */
+        .seccion-hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 100px;
+            background: radial-gradient(circle at center, rgba(225,20,34,0.04) 0%, transparent 70%);
+        }
+
+        .titulo-principal {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .subtitulo-hero {
+            color: var(--texto-secundario);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            max-width: 620px;
+            margin: 0 auto 35px;
+        }
+
+        .boton-accion {
+            background-color: var(--texto-principal);
+            color: var(--fondo);
+            padding: 14px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px var(--sombra);
+        }
+
+        .boton-accion:hover {
+            transform: scale(1.03);
+        }
+
+        /* Estilos Generales de Secciones */
+        .seccion {
+            padding: 90px 0;
+            border-bottom: 1px solid var(--borde-cristal);
+        }
+
+        .titulo-seccion {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 45px;
+            text-align: center;
+        }
+
+        /* Partidos */
+        .lista-partidos {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .tarjeta-partido {
+            background: var(--fondo-cristal);
+            border: 1px solid var(--borde-cristal);
+            border-radius: 18px;
+            padding: 22px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .tarjeta-partido:hover {
+            border-color: var(--texto-secundario);
+        }
+
+        .resumen-partido {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bando-equipo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 40%;
+        }
+
+        .bando-equipo.derecha {
+            justify-content: flex-end;
+        }
+
+        .marcador {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: var(--borde-cristal);
+            padding: 6px 16px;
+            border-radius: 10px;
+            letter-spacing: 2px;
+        }
+
+        .detalles-partido {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            color: var(--texto-secundario);
+            font-size: 14px;
+        }
+
+        .tarjeta-partido.expandido .detalles-partido {
+            max-height: 180px;
+            opacity: 1;
+            padding-top: 18px;
+            margin-top: 18px;
+            border-top: 1px solid var(--borde-cristal);
+        }
+
+        .metricas-partido {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            gap: 10px;
+        }
+
+        .metrica-fila {
+            display: contents;
+        }
+
+        /* Equipos */
+        .cuadricula-equipos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .tarjeta-equipo {
+            background: var(--fondo-cristal);
+            border: 1px solid var(--borde-cristal);
+            padding: 30px 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .tarjeta-equipo:hover {
+            transform: translateY(-6px);
+            border-color: var(--acento-rojo);
+        }
+
+        .emblema-equipo {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .nombre-equipo {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Tabla de posiciones */
+        .tabla-contenedor {
+            overflow-x: auto;
+            background: var(--fondo-cristal);
+            border: 1px solid var(--borde-cristal);
+            border-radius: 20px;
+            padding: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th, td {
+            padding: 16px;
+            border-bottom: 1px solid var(--borde-cristal);
+        }
+
+        th {
+            color: var(--texto-secundario);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border: none;
+        }
+
+        /* Galería */
+        .cuadricula-galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .contenedor-foto {
+            border-radius: 16px;
+            overflow: hidden;
+            height: 260px;
+        }
+
+        .imagen-hockey {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9);
+        }
+
+        .contenedor-foto:hover .imagen-hockey {
+            transform: scale(1.04);
+            filter: brightness(1.05);
+        }
+
+        /* Pie de página */
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            color: var(--texto-secundario);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menú superior -->
+    <header>
+        <div class="contenedor navegacion">
+            <a href="#" class="logotipo">NH<span>L</span></a>
+            <nav class="enlaces">
+                <a href="#inicio">Inicio</a>
+                <a href="#partidos">Partidos</a>
+                <a href="#equipos">Equipos</a>
+                <a href="#posiciones">Posiciones</a>
+                <a href="#galeria">Galería</a>
+                <button class="boton-tema" id="conmutador" onclick="alternarTema()">Modo Claro</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección Principal -->
+    <section class="seccion-hero" id="inicio">
+        <div class="contenedor animar">
+            <h1 class="titulo-principal">Elegancia pura.<br>Poder sobre el hielo.</h1>
+            <p class="subtitulo-hero">Sigue el ritmo de la temporada con la interfaz más limpia, fluida e intuitiva diseñada para los verdaderos amantes del hockey.</p>
+            <a href="#partidos" class="boton-accion">Ver Resultados</a>
+        </div>
+    </section>
+
+    <!-- Partidos -->
+    <section class="seccion" id="partidos">
+        <div class="contenedor">
+            <h2 class="titulo-seccion">Últimos Resultados</h2>
+            <div class="lista-partidos">
+                
+                <div class="tarjeta-partido" onclick="conmutarPartido(this)">
+                    <div class="resumen-partido">
+                        <div class="bando-equipo">🇨🇦 Bruins</div>
+                        <div class="marcador">4 - 2</div>
+                        <div class="bando-equipo derecha">🇺🇸 Rangers</div>
+                    </div>
+                    <div class="detalles-partido">
+                        <div class="metricas-partido">
+                            <div><strong>Tiros a puerta</strong><br>32 - 28</div>
+                            <div><strong>Penalizaciones</strong><br>6 min - 8 min</div>
+                            <div><strong>Power Plays</strong><br>1/3 - 0/2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tarjeta-partido" onclick="conmutarPartido(this)">
+                    <div class="resumen-partido">
+                        <div class="bando-equipo">🇨🇦 Maple Leafs</div>
+                        <div class="marcador">3 - 5</div>
+                        <div class="bando-equipo derecha">🇺🇸 Canadiens</div>
+                    </div>
+                    <div class="detalles-partido">
+                        <div class="metricas-partido">
+                            <div><strong>Tiros a puerta</strong><br>24 - 35</div>
+                            <div><strong>Penalizaciones</strong><br>4 min - 4 min</div>
+                            <div><strong>Power Plays</strong><br>1/2 - 2/2</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipos -->
+    <section class="seccion" id="equipos">
+        <div class="contenedor">
+            <h2 class="titulo-seccion">Equipos Destacados</h2>
+            <div class="cuadricula-equipos">
+                <div class="tarjeta-equipo">
+                    <div class="emblema-equipo">🐻</div>
+                    <div class="nombre-equipo">Boston Bruins</div>
+                </div>
+                <div class="tarjeta-equipo">
+                    <div class="emblema-equipo">🍁</div>
+                    <div class="nombre-equipo">Toronto Maple Leafs</div>
+                </div>
+                <div class="tarjeta-equipo">
+                    <div class="emblema-equipo">🦅</div>
+                    <div class="nombre-equipo">Washington Capitals</div>
+                </div>
+                <div class="tarjeta-equipo">
+                    <div class="emblema-equipo">⚡</div>
+                    <div class="nombre-equipo">Tampa Bay Lightning</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Posiciones -->
+    <section class="seccion" id="posiciones">
+        <div class="contenedor">
+            <h2 class="titulo-seccion">Tabla de Posiciones</h2>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Equipo</th>
+                            <th>PJ</th>
+                            <th>G</th>
+                            <th>P</th>
+                            <th>PTS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Boston Bruins</strong></td>
+                            <td>42</td>
+                            <td>30</td>
+                            <td>12</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Tampa Bay Lightning</strong></td>
+                            <td>42</td>
+                            <td>28</td>
+                            <td>14</td>
+                            <td>56</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Toronto Maple Leafs</strong></td>
+                            <td>41</td>
+                            <td>25</td>
+                            <td>16</td>
+                            <td>50</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Washington Capitals</strong></td>
+                            <td>42</td>
+                            <td>22</td>
+                            <td>20</td>
+                            <td>44</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section class="seccion" id="galeria">
+        <div class="contenedor">
+            <h2 class="titulo-seccion">Momentos especiales de la temporada :D</h2>
+            <div class="cuadricula-galeria">
+                <div class="contenedor-foto">
+                    <img src="https://images.unsplash.com/photo-1580748141549-71748dbe0bdc?auto=format&fit=crop&w=600&q=80" alt="Acción en el hielo" class="imagen-hockey">
+                </div>
+                <div class="contenedor-foto">
+                    <img src="https://images.unsplash.com/photo-1515523110800-9415d13b84a8?auto=format&fit=crop&w=600&q=80" alt="Estadio NHL" class="imagen-hockey">
+                </div>
+                <div class="contenedor-foto">
+                    <img src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&w=600&q=80" alt="Detalle patines" class="imagen-hockey">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="contenedor">
+            <p>&copy; 2026 Liga Nacional de Hockey - Derechos reservados al profe mercado.</p>
+        </div>
+    </footer>
+    <!-- <script src="funciones.js"> </script> -->
+     <script>
+        function alternarTema() {
+        const cuerpo = document.body;
+        const boton = document.getElementById('conmutador');
+        const temaActual = cuerpo.getAttribute('data-tema');       
+            if (temaActual === 'claro') {
+                cuerpo.removeAttribute('data-tema');
+                boton.textContent = 'Modo Claro';
+            } else {
+                cuerpo.setAttribute('data-tema', 'claro');
+                boton.textContent = 'Modo Oscuro';
+            }
+        }
+        function conmutarPartido(elemento) {
+            elemento.classList.toggle('expandido');
+        }        
+     </script>
+</body>
+</html>
