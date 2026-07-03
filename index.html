@@ -115,11 +115,29 @@ body {
 }
 .omni-row {
   display:flex; align-items:center; gap:10px;
-  padding:11px 15px; cursor:pointer;
+  padding:9px 15px; cursor:pointer;
   font-size:13px; color:#ddd;
   transition: background .14s;
 }
 .omni-row:hover { background:rgba(255,255,255,0.13); }
+.omni-row .omni-thumb {
+  width:30px; height:30px; border-radius:7px; flex-shrink:0; overflow:hidden;
+  background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center;
+  color:var(--red);
+}
+.omni-row .omni-thumb svg { width:15px; height:15px; }
+.omni-row .omni-thumb img { width:100%; height:100%; object-fit:cover; }
+.omni-row .omni-text { flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.omni-row .omni-name { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.omni-row .omni-sub { font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.omni-row .omni-tag {
+  font-size:10px; color:var(--muted); flex-shrink:0; padding:3px 8px;
+  border-radius:20px; background:rgba(255,255,255,0.08);
+}
+.omni-empty { padding:18px 15px; text-align:center; font-size:12.5px; color:var(--muted); }
+body.light .omni-row .omni-thumb { background:rgba(255,255,255,0.7); }
+body.light .omni-row .omni-tag { background:rgba(0,0,0,0.06); }
+body.light .omni-row:hover { background:rgba(0,0,0,0.06); }
 
 .tb-right { display:flex; gap:8px; margin-left:auto; flex-shrink:0; }
 .ico-btn {
@@ -253,6 +271,65 @@ body {
 }
 .btn-ghost:hover { background:rgba(255,255,255,0.13); box-shadow: 0 6px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 rgba(0,0,0,0.15); }
 
+/* ══ GALERÍA DE PLAYLISTS ══ */
+.gallery-header { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.gallery-title { font-size:28px; font-weight:700; letter-spacing:-.4px; font-family:var(--font); }
+
+.playlist-gallery {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+  grid-auto-rows:min-content; align-content:start;
+  gap:18px; overflow-y:auto; padding-right:4px; flex:1;
+}
+.playlist-gallery::-webkit-scrollbar { width:4px; }
+.playlist-gallery::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.14); border-radius:4px; }
+
+.pg-card {
+  display:flex; flex-direction:column; gap:9px; cursor:pointer;
+  padding:10px; border-radius:14px; height:fit-content;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  transition: background .2s, transform .18s, box-shadow .18s, border-color .2s;
+}
+.pg-card:hover {
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(255,255,255,0.16);
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(0,0,0,0.4);
+}
+.pg-cover {
+  width:100%; aspect-ratio:1/1; border-radius:10px; overflow:hidden;
+  background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;
+  color:var(--red); position:relative;
+  box-shadow:0 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.pg-cover svg { width:34%; height:34%; }
+.pg-cover img { width:100%; height:100%; object-fit:cover; }
+.pg-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pg-meta { font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.pg-add {
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px;
+  cursor:pointer; padding:10px; border-radius:14px; height:fit-content;
+  background:rgba(255,255,255,0.03);
+  border:1.5px dashed rgba(255,255,255,0.16);
+  transition: background .2s, border-color .2s, transform .18s;
+  aspect-ratio:150/204;
+}
+.pg-add:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.3); transform:translateY(-2px); }
+.pg-add .pg-add-ico {
+  width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.08); color:var(--muted);
+}
+.pg-add .pg-add-ico svg { width:20px; height:20px; }
+.pg-add-label { font-size:12.5px; color:var(--muted); font-weight:500; }
+
+body.light .pg-card { background:rgba(255,255,255,0.58); border-color:rgba(40,20,24,0.10); box-shadow:0 10px 26px rgba(58,22,25,0.05); }
+body.light .pg-card:hover { background:rgba(255,255,255,0.78); border-color:rgba(252,60,68,0.18); }
+body.light .pg-cover { background:rgba(255,255,255,0.72); border-color:rgba(40,20,24,0.12); }
+body.light .pg-add { background:rgba(0,0,0,0.02); border-color:rgba(40,20,24,0.16); }
+body.light .pg-add:hover { background:rgba(0,0,0,0.04); border-color:rgba(252,60,68,0.3); }
+body.light .pg-add .pg-add-ico { background:rgba(0,0,0,0.06); }
+
 /* ══ GRID CANCIONES ══ */
 .songs-grid {
   display:grid; grid-template-columns:repeat(3,1fr);
@@ -305,7 +382,8 @@ body {
   font-size:11.5px; color:var(--muted);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;
 }
-.s-star { color:var(--red); font-size:12px; flex-shrink:0; }
+.s-star { color:var(--red); font-size:12px; flex-shrink:0; background:none; border:none; cursor:pointer; padding:4px; transition:opacity .2s, transform .15s; }
+.s-star:hover { transform:scale(1.18); }
 
 /* ── MENÚ CONTEXTUAL ── */
 .s-menu-btn {
@@ -705,22 +783,9 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
   </button>
 
   <div class="srch-wrap">
-    <input class="srch-bar glass" type="text" placeholder="Búscar" id="srchInput">
+    <input class="srch-bar glass" type="text" placeholder="Buscar canciones, artistas o playlists" id="srchInput" autocomplete="off">
     <span class="srch-ico">⌕</span>
-    <div class="omni-drop glass" id="omniDrop">
-      <div class="omni-row" onclick="pickSearch('Álvaro Díaz — NO PODEMOS SER AMIGOS')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-        Álvaro Díaz — NO PODEMOS SER AMIGOS
-      </div>
-      <div class="omni-row" onclick="pickSearch('Gatitas Bandungueras Vol.1')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-        Gatitas Bandungueras Vol.1
-      </div>
-      <div class="omni-row" onclick="pickSearch('Harry Styles — Sen Senra')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
-        Harry Styles — Sen Senra
-      </div>
-    </div>
+    <div class="omni-drop glass" id="omniDrop"></div>
   </div>
 
   <div class="tb-right">
@@ -762,7 +827,7 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
     </div>
     <div class="sb-sec">
       <div class="sb-lbl">Playlists</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span> Todas las playlists</div>
+      <div class="nav-it" id="navTodasPlaylists" onclick="navClick(this); abrirGaleriaPlaylists();"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span> Todas las playlists</div>
       <div id="playlistList"><div class="nav-it on" data-playlist-id="favoritas"><span class="nav-thumb"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span><span class="nav-name">Canciones favoritas</span></div><div class="nav-it" data-playlist-id="gatitas"><span class="nav-thumb"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span><span class="nav-name">Gatitas Bandungueras</span></div><div class="nav-it" data-playlist-id="balasdas"><span class="nav-thumb"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span><span class="nav-name">Balasdas</span></div></div>
       <button class="nav-it nav-button add-playlist" type="button" onclick="abrirModalPlaylist()"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span> Nueva playlist</button>
     </div>
@@ -770,7 +835,7 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
 
   <main class="main">
 
-    <div class="pl-header">
+    <div class="pl-header" id="plHeader">
       <div class="cover-art" id="coverArt" onclick="document.getElementById('fileCover').click()">
         <span id="coverEmoji"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span>
       </div>
@@ -782,10 +847,14 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
             <span id="playIco">▶</span><span id="playLbl">Reproducir</span>
           </button>
           <button class="btn btn-ghost" onclick="shufflePlay()">⇄ Aleatorio</button>
-          <button class="btn btn-ghost" style="font-size:12px">📡 Crear Estación basada en esta lista</button>
           <button class="btn btn-ghost" style="font-size:12px" onclick="document.getElementById('fileFolder').click()">＋ Agregar canciones</button>
         </div>
       </div>
+    </div>
+
+    <div class="gallery-header" id="galleryHeader" style="display:none">
+      <div class="gallery-title">Todas las playlists</div>
+      <button class="btn btn-ghost" style="font-size:12px" onclick="abrirModalPlaylist()">＋ Nueva playlist</button>
     </div>
 
     <div class="songs-grid" id="songsGrid"><div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px; color: var(--muted); text-align: center;">
@@ -797,7 +866,10 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
       </button>
     </div></div>
 
+    <div class="playlist-gallery" id="playlistGallery" style="display:none"></div>
+
   </main>
+
 </div>
 
 
@@ -879,7 +951,7 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
       <div id="queueList"></div>
     </div>
 
-    <button class="m-artist-btn">Ver Detalles del Artista</button>
+    <button class="m-artist-btn" id="verArtistaBtn" onclick="verCancionesDelArtista()">Ver canciones de este artista</button>
   </div>
 
 </div>
@@ -890,8 +962,8 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
 ══════════════════════════════ */
 const playlists = {
   favoritas: { titulo:"Canciones favoritas", meta:"0 canciones", img:null, canciones:[] },
-  Isra:   { titulo:"Israaa", meta:"0 canciones", img:null, canciones:[] },
-  Oscar:  { titulo:"Oscaaarrrr", meta:"0 canciones", img:null, canciones:[] },
+  gatitas:   { titulo:"Gatitas Bandungueras", meta:"0 canciones", img:null, canciones:[] },
+  balasdas:  { titulo:"Balasdas", meta:"0 canciones", img:null, canciones:[] },
 };
 
 /* ══════════════════════════════
@@ -1047,7 +1119,7 @@ async function cargarArchivosEnPlaylist(files) {
     const dur = await cargarAudio(file);
     const { artista, nombre } = parsearNombreArchivo(file.name);
     const portada = await extractCover(file);
-    pl.canciones.push({ nombre, artista, img:portada, dur, audioUrl: url, file });
+    pl.canciones.push({ nombre, artista, img:portada, dur, audioUrl: url, file, favorita:false });
   }
 
   pl.meta = pl.canciones.length + ' canción' + (pl.canciones.length !== 1 ? 'es' : '');
@@ -1155,12 +1227,22 @@ function navClick(el) {
   el.classList.add('on');
 }
 
+function mostrarVistaPlaylist() {
+  document.getElementById('plHeader').style.display = '';
+  document.getElementById('songsGrid').style.display = '';
+  document.getElementById('galleryHeader').style.display = 'none';
+  document.getElementById('playlistGallery').style.display = 'none';
+}
+
 function abrirPlaylist(id, el) {
   if (!playlists[id]) return;
+  mostrarVistaPlaylist();
   if (el) navClick(el);
+  else marcarPlaylistActivaEnNav(id);
   plActual = id;
   canciones = playlists[id].canciones;
   idx = 0; pct = 0; playing = false;
+  filtroArtista = null;
   const pl = playlists[id];
   document.getElementById('plTitle').textContent = pl.titulo;
   document.getElementById('plMeta').textContent = pl.meta;
@@ -1169,6 +1251,50 @@ function abrirPlaylist(id, el) {
   renderGrid();
   actualizarMini();
   actualizarFondo();
+}
+
+function marcarPlaylistActivaEnNav(id) {
+  document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
+  const navEl = document.querySelector(`[data-playlist-id="${id}"]`);
+  if (navEl) navEl.classList.add('on');
+}
+
+/* ══════════════════════════════
+   GALERÍA "TODAS LAS PLAYLISTS"
+══════════════════════════════ */
+function abrirGaleriaPlaylists() {
+  document.getElementById('plHeader').style.display = 'none';
+  document.getElementById('songsGrid').style.display = 'none';
+  document.getElementById('galleryHeader').style.display = '';
+  document.getElementById('playlistGallery').style.display = '';
+  renderGaleriaPlaylists();
+}
+
+function renderGaleriaPlaylists() {
+  const grid = document.getElementById('playlistGallery');
+  grid.innerHTML = '';
+
+  Object.entries(playlists).forEach(([id, pl]) => {
+    const card = document.createElement('div');
+    card.className = 'pg-card';
+    const cover = pl.img ? `<img src="${pl.img}" alt="">` : iconSvg('music');
+    card.innerHTML = `
+      <div class="pg-cover">${cover}</div>
+      <div class="pg-name">${escapeHTML(pl.titulo)}</div>
+      <div class="pg-meta">${escapeHTML(pl.meta)}</div>
+    `;
+    card.onclick = () => abrirPlaylist(id);
+    grid.appendChild(card);
+  });
+
+  const addCard = document.createElement('div');
+  addCard.className = 'pg-add';
+  addCard.innerHTML = `
+    <span class="pg-add-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+    <span class="pg-add-label">Nueva playlist</span>
+  `;
+  addCard.onclick = () => abrirModalPlaylist();
+  grid.appendChild(addCard);
 }
 
 /* ══════════════════════════════
@@ -1249,11 +1375,38 @@ document.getElementById('ctxEliminar').onclick = (e) => {
 /* ══════════════════════════════
    GRID
 ══════════════════════════════ */
+let filtroArtista = null;
+
+function limpiarFiltroArtista() {
+  filtroArtista = null;
+  renderGrid();
+}
+
+function verCancionesDelArtista() {
+  if (!canciones.length) return;
+  const artista = canciones[idx].artista;
+  filtroArtista = artista;
+  renderGrid();
+  document.querySelector('.songs-grid')?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
 function renderGrid() {
   const g = document.getElementById('songsGrid');
   g.innerHTML = '';
 
-  if (!canciones.length) {
+  const listaCompleta = canciones;
+  const lista = filtroArtista
+    ? canciones.map((c, i) => ({ c, i })).filter(({ c }) => c.artista === filtroArtista)
+    : canciones.map((c, i) => ({ c, i }));
+
+  if (filtroArtista) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);padding:2px 2px 8px;';
+    banner.innerHTML = `Mostrando canciones de <strong style="color:var(--text)">${escapeHTML(filtroArtista)}</strong> <button onclick="limpiarFiltroArtista()" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;color:var(--text);border-radius:14px;padding:5px 12px;font-size:11.5px;cursor:pointer;font-family:var(--font);">Quitar filtro ✕</button>`;
+    g.appendChild(banner);
+  }
+
+  if (!listaCompleta.length) {
     const vacio = document.createElement('div');
     vacio.style.cssText = 'grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;color:var(--muted);text-align:center;';
     vacio.innerHTML = `
@@ -1268,7 +1421,15 @@ function renderGrid() {
     return;
   }
 
-  canciones.forEach((c, i) => {
+  if (filtroArtista && !lista.length) {
+    const vacio = document.createElement('div');
+    vacio.style.cssText = 'grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px;color:var(--muted);text-align:center;';
+    vacio.innerHTML = `<div style="font-size:13px;">No hay más canciones de este artista en esta playlist.</div>`;
+    g.appendChild(vacio);
+    return;
+  }
+
+  lista.forEach(({ c, i }) => {
     const card = document.createElement('div');
     card.className = 's-card' + (i === idx ? ' playing' : '');
 
@@ -1277,15 +1438,16 @@ function renderGrid() {
       : `${iconSvg('music')}<span class="add-img-hint">+ imagen</span>`;
 
     const mm = Math.floor(c.dur/60), ss = String(c.dur%60).padStart(2,'0');
+    const esFav = !!c.favorita;
 
     card.innerHTML = `
       <div class="s-thumb">${thumbInner}</div>
       <div class="s-info">
-        <div class="s-name">${c.nombre}</div>
-        <div class="s-artist">${c.artista}</div>
+        <div class="s-name">${escapeHTML(c.nombre)}</div>
+        <div class="s-artist">${escapeHTML(c.artista)}</div>
       </div>
       <span style="font-size:11px;color:var(--muted);flex-shrink:0;">${mm}:${ss}</span>
-      <span class="s-star">★</span>
+      <button class="s-star" title="${esFav ? 'Quitar de favoritas' : 'Agregar a favoritas'}" style="opacity:${esFav ? '1' : '.45'}">★</button>
       ${i === idx ? '<div class="wave"><span></span><span></span><span></span><span></span></div>' : ''}
       <button class="s-menu-btn" onclick="openSongMenu(event, ${i})">⋮</button>
     `;
@@ -1295,9 +1457,43 @@ function renderGrid() {
       imgTarget = { tipo:'cancion', i };
       document.getElementById('fileSong').click();
     });
+    card.querySelector('.s-star').addEventListener('click', e => {
+      e.stopPropagation();
+      toggleFavorita(i);
+    });
     card.addEventListener('click', () => seleccionarCancion(i));
     g.appendChild(card);
   });
+}
+
+/* ══════════════════════════════
+   FAVORITOS (★)
+   Marca/desmarca una canción y la sincroniza con la
+   playlist "Canciones favoritas" sin duplicarla.
+══════════════════════════════ */
+function toggleFavorita(i) {
+  const c = canciones[i];
+  c.favorita = !c.favorita;
+
+  if (plActual !== 'favoritas') {
+    const fav = playlists.favoritas;
+    const yaEsta = fav.canciones.some(s => s === c);
+    if (c.favorita && !yaEsta) {
+      fav.canciones.push(c);
+    } else if (!c.favorita && yaEsta) {
+      const pos = fav.canciones.indexOf(c);
+      if (pos > -1) fav.canciones.splice(pos, 1);
+    }
+    fav.meta = fav.canciones.length + ' canción' + (fav.canciones.length !== 1 ? 'es' : '');
+    if (plActual === 'favoritas') document.getElementById('plMeta').textContent = fav.meta;
+  } else if (!c.favorita) {
+    canciones.splice(i, 1);
+    if (i === idx) idx = Math.min(idx, canciones.length - 1);
+    else if (i < idx) idx--;
+    playlists.favoritas.meta = canciones.length + ' canción' + (canciones.length !== 1 ? 'es' : '');
+    document.getElementById('plMeta').textContent = playlists.favoritas.meta;
+  }
+  renderGrid();
 }
 
 /* ══════════════════════════════
@@ -1400,17 +1596,21 @@ function renderCola() {
   ql.innerHTML = '';
   if (!canciones.length) return;
   for (let k=1; k<=2; k++) {
-    const c = canciones[(idx+k) % canciones.length];
+    const realIdx = (idx+k) % canciones.length;
+    const c = canciones[realIdx];
     const d = document.createElement('div');
     d.className = 'q-item';
     d.innerHTML = `
       <div class="q-thumb">${c.img ? `<img src="${c.img}" alt="">` : iconSvg('music')}</div>
       <div class="q-info">
-        <div class="q-name">${c.nombre}</div>
-        <div class="q-artist">${c.artista}</div>
+        <div class="q-name">${escapeHTML(c.nombre)}</div>
+        <div class="q-artist">${escapeHTML(c.artista)}</div>
       </div>
-      <button class="q-add">＋</button>
+      <button class="q-add" title="Reproducir ahora">▶</button>
     `;
+    d.querySelector('.q-info').style.cursor = 'pointer';
+    d.querySelector('.q-info').addEventListener('click', () => seleccionarCancion(realIdx));
+    d.querySelector('.q-add').addEventListener('click', e => { e.stopPropagation(); seleccionarCancion(realIdx); });
     ql.appendChild(d);
   }
 }
@@ -1524,14 +1724,96 @@ function seekTo(e) {
 }
 
 /* ══════════════════════════════
-   OMNI SEARCH
+   BÚSQUEDA UNIVERSAL
+   Busca canciones reales cargadas en TODAS las playlists,
+   y también playlists por nombre. Se actualiza dinámicamente
+   cada vez que el usuario escribe.
 ══════════════════════════════ */
 const si = document.getElementById('srchInput');
 const od = document.getElementById('omniDrop');
-si.addEventListener('input', () => od.classList.toggle('on', si.value.length > 0));
-si.addEventListener('focus', () => { if (si.value.length > 0) od.classList.add('on'); });
+
+function normalizarTexto(t) {
+  return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function buscarEnBiblioteca(query) {
+  const q = normalizarTexto(query).trim();
+  if (!q) return { canciones: [], playlistsMatch: [] };
+
+  const resultadosCanciones = [];
+  Object.entries(playlists).forEach(([pid, pl]) => {
+    pl.canciones.forEach((c, i) => {
+      const hay = normalizarTexto(c.nombre).includes(q) || normalizarTexto(c.artista).includes(q);
+      if (hay) resultadosCanciones.push({ pid, i, c });
+    });
+  });
+
+  const playlistsMatch = Object.entries(playlists)
+    .filter(([pid, pl]) => normalizarTexto(pl.titulo).includes(q))
+    .map(([pid, pl]) => ({ pid, pl }));
+
+  return { canciones: resultadosCanciones.slice(0, 8), playlistsMatch: playlistsMatch.slice(0, 4) };
+}
+
+function renderOmniResultados(query) {
+  const { canciones: resCanciones, playlistsMatch } = buscarEnBiblioteca(query);
+  od.innerHTML = '';
+
+  if (!resCanciones.length && !playlistsMatch.length) {
+    od.innerHTML = `<div class="omni-empty">Sin resultados para "${escapeHTML(query)}"</div>`;
+    return;
+  }
+
+  playlistsMatch.forEach(({ pid, pl }) => {
+    const row = document.createElement('div');
+    row.className = 'omni-row';
+    const thumb = pl.img ? `<img src="${pl.img}" alt="">` : iconSvg('music');
+    row.innerHTML = `
+      <span class="omni-thumb">${thumb}</span>
+      <span class="omni-text">
+        <span class="omni-name">${escapeHTML(pl.titulo)}</span>
+        <span class="omni-sub">Playlist · ${escapeHTML(pl.meta)}</span>
+      </span>
+      <span class="omni-tag">Playlist</span>
+    `;
+    row.onclick = () => {
+      abrirPlaylist(pid, document.querySelector(`[data-playlist-id="${pid}"]`));
+      od.classList.remove('on');
+      si.value = '';
+    };
+    od.appendChild(row);
+  });
+
+  resCanciones.forEach(({ pid, i, c }) => {
+    const row = document.createElement('div');
+    row.className = 'omni-row';
+    const thumb = c.img ? `<img src="${c.img}" alt="">` : iconSvg('music');
+    row.innerHTML = `
+      <span class="omni-thumb">${thumb}</span>
+      <span class="omni-text">
+        <span class="omni-name">${escapeHTML(c.nombre)}</span>
+        <span class="omni-sub">${escapeHTML(c.artista)}</span>
+      </span>
+      <span class="omni-tag">${escapeHTML(playlists[pid].titulo)}</span>
+    `;
+    row.onclick = () => {
+      abrirPlaylist(pid, document.querySelector(`[data-playlist-id="${pid}"]`));
+      seleccionarCancion(i);
+      od.classList.remove('on');
+      si.value = '';
+    };
+    od.appendChild(row);
+  });
+}
+
+si.addEventListener('input', () => {
+  const q = si.value.trim();
+  if (!q) { od.classList.remove('on'); return; }
+  renderOmniResultados(q);
+  od.classList.add('on');
+});
+si.addEventListener('focus', () => { if (si.value.trim().length > 0) { renderOmniResultados(si.value.trim()); od.classList.add('on'); } });
 document.addEventListener('click', e => { if (!e.target.closest('.srch-wrap')) od.classList.remove('on'); });
-function pickSearch(t) { si.value = t; od.classList.remove('on'); }
 
 /* ══════════════════════════════
    INIT
