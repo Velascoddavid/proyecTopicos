@@ -34,7 +34,6 @@ body {
 #bgAmbient {
   position:fixed; inset:0; z-index:0;
   transition: background 1.4s ease;
-  animation: hueShift 16s ease-in-out infinite alternate;
 }
 #bgImg {
   position:fixed; inset:0; z-index:0;
@@ -45,10 +44,6 @@ body {
   transition: opacity 1.5s ease;
 }
 #bgImg.on { opacity: 1; }
-@keyframes hueShift {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(12deg) brightness(1.06); }
-}
 
 /* ══ GLASS BASE ══ */
 .glass {
@@ -818,12 +813,10 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
     <div class="sb-sec">
       <div class="sb-lbl">Biblioteca</div>
       <div class="nav-it" onclick="navClick(this)"><span class="ico rojo"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.2 6.4 20.2 7.5 14 3 9.6l6.2-.9Z"></path></svg></span> Destacados</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13A2.5 2.5 0 0 1 6.5 3Z"></path></svg></span> Biblioteca</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"></path><path d="M3 11V9a3 3 0 0 1 3-3h15"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 13v2a3 3 0 0 1-3 3H3"></path></svg></span> Replay 2026</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span> Balasdas</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 14a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v4a4 4 0 0 0 4 4Z"></path><path d="M19 10a7 7 0 0 1-14 0"></path><path d="M12 17v4"></path></svg></span> Artistas</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 3v4"></path><path d="M12 17v4"></path></svg></span> Álbumes</div>
-      <div class="nav-it" onclick="navClick(this)"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span> Canciones</div>
+      <div class="nav-it" onclick="navClick(this); mostrarReplay();"><span class="ico"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"></path><path d="M3 11V9a3 3 0 0 1 3-3h15"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 13v2a3 3 0 0 1-3 3H3"></path></svg></span> Replay 2026</div>
+      <div class="nav-it" onclick="navClick(this); mostrarArtistas();"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 14a4 4 0 0 0 4-4V6a4 4 0 0 0-8 0v4a4 4 0 0 0 4 4Z"></path><path d="M19 10a7 7 0 0 1-14 0"></path><path d="M12 17v4"></path></svg></span> Artistas</div>
+      <div class="nav-it" onclick="navClick(this); mostrarAlbumes();"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 3v4"></path><path d="M12 17v4"></path></svg></span> Álbumes</div>
+      <div class="nav-it" onclick="navClick(this); mostrarTodasCanciones();"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span> Canciones</div>
     </div>
     <div class="sb-sec">
       <div class="sb-lbl">Playlists</div>
@@ -847,18 +840,18 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
             <span id="playIco">▶</span><span id="playLbl">Reproducir</span>
           </button>
           <button class="btn btn-ghost" onclick="shufflePlay()">⇄ Aleatorio</button>
-          <button class="btn btn-ghost" style="font-size:12px" onclick="document.getElementById('fileFolder').click()">＋ Agregar canciones</button>
+          <button class="btn btn-ghost" id="btnAgregarCanciones" style="font-size:12px" onclick="document.getElementById('fileFolder').click()">＋ Agregar canciones</button>
         </div>
       </div>
     </div>
 
     <div class="gallery-header" id="galleryHeader" style="display:none">
-      <div class="gallery-title">Todas las playlists</div>
-      <button class="btn btn-ghost" style="font-size:12px" onclick="abrirModalPlaylist()">＋ Nueva playlist</button>
+      <div class="gallery-title" id="galleryTitle">Todas las playlists</div>
+      <button class="btn btn-ghost" style="font-size:12px" id="galleryAddBtn" onclick="abrirModalPlaylist()">＋ Nueva playlist</button>
     </div>
 
     <div class="songs-grid" id="songsGrid"><div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 40px; color: var(--muted); text-align: center;">
-      <div style="font-size:42px;opacity:.4">🎵</div>
+      <div style="width:42px;height:42px;opacity:.4;margin:0 auto;"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
       <div style="font-size:14px;font-weight:500;">Esta playlist está vacía</div>
       <div style="font-size:12px;opacity:.7;">Agrega canciones desde una carpeta de tu dispositivo</div>
       <button onclick="document.getElementById('fileFolder').click()" style="margin-top:8px;padding:10px 22px;border-radius:22px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;font-size:13px;font-family:var(--font);backdrop-filter:blur(10px);">
@@ -899,7 +892,7 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
 <div class="mini-player" id="miniPlayer">
 
   <div class="mp-collapsed" id="mpCollapsed" onclick="toggleExpand(event)">
-    <div class="m-cover" id="mCoverC"><span id="mCoverIcoC">🎵</span></div>
+    <div class="m-cover" id="mCoverC"><span id="mCoverIcoC"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span></div>
     <div class="mp-ticker-wrap">
       <div class="mp-ticker" id="mpTicker">
         <div class="mp-ticker-inner">
@@ -923,7 +916,7 @@ body.light .switch::after { transform:translateX(14px); background:var(--red); }
   <div class="mp-expanded" id="mpExpanded">
     <button class="mp-collapse-btn" type="button" onclick="toggleExpand(event)" title="Cerrar reproductor"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg></button>
     <div class="m-now">
-      <div class="m-cover" id="mCover"><span id="mCoverIco">🎵</span></div>
+      <div class="m-cover" id="mCover"><span id="mCoverIco"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></span></div>
       <div>
         <div class="m-title" id="mTitle">—</div>
         <div class="m-artist" id="mArtist">—</div>
@@ -977,6 +970,7 @@ let pct = 0;
 let timer = null;
 let imgTarget = null;
 let playerExpandido = false;
+let vistaEspecial = null; // null | 'canciones' | 'artistas' | 'albumes' | 'replay'
 let playlistCounter = 3;
 let newPlaylistCoverUrl = null;
 let newPlaylistFolderFiles = null;
@@ -1061,19 +1055,21 @@ async function crearPlaylistDesdeModal() {
 /* ══════════════════════════════
    EXTRAER PORTADA DE AUDIO CON JSMEDIATAGS
 ══════════════════════════════ */
-function extractCover(file) {
+function extractMeta(file) {
   return new Promise((resolve) => {
-    if (!window.jsmediatags) return resolve(null);
+    if (!window.jsmediatags) return resolve({ img:null, album:null });
     jsmediatags.read(file, {
       onSuccess: function(tag) {
         const data = tag.tags.picture;
+        let img = null;
         if (data) {
           let base64String = "";
           for (let i = 0; i < data.data.length; i++) base64String += String.fromCharCode(data.data[i]);
-          resolve(`data:${data.format};base64,${window.btoa(base64String)}`);
-        } else resolve(null);
+          img = `data:${data.format};base64,${window.btoa(base64String)}`;
+        }
+        resolve({ img, album: tag.tags.album || null });
       },
-      onError: function() { resolve(null); }
+      onError: function() { resolve({ img:null, album:null }); }
     });
   });
 }
@@ -1118,8 +1114,8 @@ async function cargarArchivosEnPlaylist(files) {
     const url = URL.createObjectURL(file);
     const dur = await cargarAudio(file);
     const { artista, nombre } = parsearNombreArchivo(file.name);
-    const portada = await extractCover(file);
-    pl.canciones.push({ nombre, artista, img:portada, dur, audioUrl: url, file, favorita:false });
+    const { img:portada, album } = await extractMeta(file);
+    pl.canciones.push({ nombre, artista, album: album || 'Álbum desconocido', img:portada, dur, audioUrl: url, file, favorita:false, reproducciones:0 });
   }
 
   pl.meta = pl.canciones.length + ' canción' + (pl.canciones.length !== 1 ? 'es' : '');
@@ -1142,7 +1138,7 @@ function mostrarCargando(on) {
       el = document.createElement('div');
       el.id = 'loadingMsg';
       el.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,5,5,0.85);backdrop-filter:blur(20px);padding:20px 32px;border-radius:14px;font-size:14px;color:#f2f2f2;border:1px solid rgba(255,255,255,0.15);z-index:999;';
-      el.textContent = '⏳ Cargando canciones...';
+      el.textContent = 'Cargando canciones...';
       document.body.appendChild(el);
     }
   } else {
@@ -1240,9 +1236,12 @@ function abrirPlaylist(id, el) {
   if (el) navClick(el);
   else marcarPlaylistActivaEnNav(id);
   plActual = id;
+  vistaEspecial = null;
   canciones = playlists[id].canciones;
   idx = 0; pct = 0; playing = false;
   filtroArtista = null;
+  document.querySelector('.acciones').style.display = '';
+  document.getElementById('btnAgregarCanciones').style.display = '';
   const pl = playlists[id];
   document.getElementById('plTitle').textContent = pl.titulo;
   document.getElementById('plMeta').textContent = pl.meta;
@@ -1263,10 +1262,13 @@ function marcarPlaylistActivaEnNav(id) {
    GALERÍA "TODAS LAS PLAYLISTS"
 ══════════════════════════════ */
 function abrirGaleriaPlaylists() {
+  vistaEspecial = null;
   document.getElementById('plHeader').style.display = 'none';
   document.getElementById('songsGrid').style.display = 'none';
   document.getElementById('galleryHeader').style.display = '';
   document.getElementById('playlistGallery').style.display = '';
+  document.getElementById('galleryTitle').textContent = 'Todas las playlists';
+  document.getElementById('galleryAddBtn').style.display = '';
   renderGaleriaPlaylists();
 }
 
@@ -1298,31 +1300,144 @@ function renderGaleriaPlaylists() {
 }
 
 /* ══════════════════════════════
+   TODAS LAS CANCIONES (sin duplicar)
+══════════════════════════════ */
+function todasLasCancionesUnicas() {
+  const vistas = new Set();
+  const resultado = [];
+  Object.values(playlists).forEach(pl => {
+    pl.canciones.forEach(c => {
+      if (!vistas.has(c)) { vistas.add(c); resultado.push(c); }
+    });
+  });
+  return resultado;
+}
+
+function prepararVistaEspecial(titulo, lista) {
+  mostrarVistaPlaylist();
+  document.querySelector('.acciones').style.display = lista.length ? '' : 'none';
+  document.getElementById('btnAgregarCanciones').style.display = 'none';
+  plActual = null;
+  canciones = lista;
+  idx = 0; pct = 0; playing = false;
+  filtroArtista = null;
+  document.getElementById('plTitle').textContent = titulo;
+  document.getElementById('plMeta').textContent = lista.length + ' canción' + (lista.length !== 1 ? 'es' : '');
+  setPlaylistCoverUI({ img:null });
+  renderGrid();
+  actualizarMini();
+  actualizarFondo();
+}
+
+function mostrarTodasCanciones() {
+  vistaEspecial = 'canciones';
+  prepararVistaEspecial('Canciones', todasLasCancionesUnicas());
+}
+
+function mostrarReplay() {
+  vistaEspecial = 'replay';
+  const lista = todasLasCancionesUnicas()
+    .filter(c => c.reproducciones > 0)
+    .sort((a, b) => b.reproducciones - a.reproducciones);
+  prepararVistaEspecial('Replay 2026', lista);
+}
+
+/* ══════════════════════════════
+   GALERÍAS DE ARTISTAS / ÁLBUMES
+══════════════════════════════ */
+function agruparPor(campo) {
+  const grupos = {};
+  todasLasCancionesUnicas().forEach(c => {
+    const clave = c[campo] || 'Desconocido';
+    if (!grupos[clave]) grupos[clave] = { nombre: clave, img: c.img, cantidad: 0 };
+    grupos[clave].cantidad++;
+    if (!grupos[clave].img && c.img) grupos[clave].img = c.img;
+  });
+  return grupos;
+}
+
+function renderGaleriaAgrupada(campo, tituloVista) {
+  document.getElementById('plHeader').style.display = 'none';
+  document.getElementById('songsGrid').style.display = 'none';
+  document.getElementById('galleryHeader').style.display = '';
+  document.getElementById('playlistGallery').style.display = '';
+  document.getElementById('galleryTitle').textContent = tituloVista;
+  document.getElementById('galleryAddBtn').style.display = 'none';
+
+  const grid = document.getElementById('playlistGallery');
+  grid.innerHTML = '';
+  const grupos = agruparPor(campo);
+  const claves = Object.keys(grupos);
+
+  if (!claves.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;font-size:13px;">Aún no hay ${tituloVista.toLowerCase()} — importa canciones para verlos aquí.</div>`;
+    return;
+  }
+
+  claves.forEach(clave => {
+    const g = grupos[clave];
+    const card = document.createElement('div');
+    card.className = 'pg-card';
+    const cover = g.img ? `<img src="${g.img}" alt="">` : iconSvg('music');
+    card.innerHTML = `
+      <div class="pg-cover">${cover}</div>
+      <div class="pg-name">${escapeHTML(g.nombre)}</div>
+      <div class="pg-meta">${g.cantidad} canción${g.cantidad !== 1 ? 'es' : ''}</div>
+    `;
+    card.onclick = () => {
+      vistaEspecial = 'canciones';
+      const lista = campo === 'artista'
+        ? todasLasCancionesUnicas().filter(c => c.artista === clave)
+        : todasLasCancionesUnicas().filter(c => (c.album || 'Álbum desconocido') === clave);
+      prepararVistaEspecial(g.nombre, lista);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function mostrarArtistas() {
+  vistaEspecial = 'artistas';
+  renderGaleriaAgrupada('artista', 'Artistas');
+}
+
+function mostrarAlbumes() {
+  vistaEspecial = 'albumes';
+  renderGaleriaAgrupada('album', 'Álbumes');
+}
+
+/* ══════════════════════════════
    MENÚ CONTEXTUAL CANCIÓN (3 PUNTOS)
 ══════════════════════════════ */
 function openSongMenu(e, i) {
   e.stopPropagation();
   ctxTargetIdx = i;
-  
+
+  const ctxPlWrap = document.getElementById('ctxPlWrap');
+  const ctxEliminarBtn = document.getElementById('ctxEliminar');
+  ctxPlWrap.style.display = vistaEspecial ? 'none' : '';
+  ctxEliminarBtn.style.display = vistaEspecial ? 'none' : '';
+
   // Llenar submenu de playlists dinámicamente
   const sub = document.getElementById('ctxSubPl');
   sub.innerHTML = '';
   let count = 0;
-  Object.keys(playlists).forEach(pid => {
-    if (pid !== plActual) {
-      count++;
-      const btn = document.createElement('button');
-      btn.className = 'ctx-item'; btn.textContent = playlists[pid].titulo;
-      btn.onclick = (ev) => {
-        ev.stopPropagation();
-        playlists[pid].canciones.push(canciones[i]);
-        playlists[pid].meta = playlists[pid].canciones.length + ' canciones';
-        ctxMenu.classList.remove('on');
-      };
-      sub.appendChild(btn);
-    }
-  });
-  if(count===0) sub.innerHTML = '<div class="ctx-item" style="color:var(--muted)">Sin otras playlists</div>';
+  if (!vistaEspecial) {
+    Object.keys(playlists).forEach(pid => {
+      if (pid !== plActual) {
+        count++;
+        const btn = document.createElement('button');
+        btn.className = 'ctx-item'; btn.textContent = playlists[pid].titulo;
+        btn.onclick = (ev) => {
+          ev.stopPropagation();
+          playlists[pid].canciones.push(canciones[i]);
+          playlists[pid].meta = playlists[pid].canciones.length + ' canciones';
+          ctxMenu.classList.remove('on');
+        };
+        sub.appendChild(btn);
+      }
+    });
+    if(count===0) sub.innerHTML = '<div class="ctx-item" style="color:var(--muted)">Sin otras playlists</div>';
+  }
 
   // Evitar overflow en pantalla
   const rect = e.target.getBoundingClientRect();
@@ -1363,6 +1478,7 @@ document.getElementById('ctxDescargar').onclick = (e) => {
 
 document.getElementById('ctxEliminar').onclick = (e) => {
   e.stopPropagation();
+  if (vistaEspecial) { ctxMenu.classList.remove('on'); return; }
   if (ctxTargetIdx === idx) { nextSong(); idx--; } 
   else if (ctxTargetIdx < idx) { idx--; }
   canciones.splice(ctxTargetIdx, 1);
@@ -1409,8 +1525,13 @@ function renderGrid() {
   if (!listaCompleta.length) {
     const vacio = document.createElement('div');
     vacio.style.cssText = 'grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;color:var(--muted);text-align:center;';
-    vacio.innerHTML = `
-      <div style="font-size:42px;opacity:.4">🎵</div>
+    const esReplay = vistaEspecial === 'replay';
+    vacio.innerHTML = esReplay ? `
+      <div style="width:42px;height:42px;opacity:.4;margin:0 auto;"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4"></path><path d="M3 11V9a3 3 0 0 1 3-3h15"></path><path d="M7 22l-4-4 4-4"></path><path d="M21 13v2a3 3 0 0 1-3 3H3"></path></svg></div>
+      <div style="font-size:14px;font-weight:500;">Aún no hay canciones repetidas</div>
+      <div style="font-size:12px;opacity:.7;">Reproduce algunas canciones para que aparezcan aquí</div>
+    ` : `
+      <div style="width:42px;height:42px;opacity:.4;margin:0 auto;"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
       <div style="font-size:14px;font-weight:500;">Esta playlist está vacía</div>
       <div style="font-size:12px;opacity:.7;">Agrega canciones desde una carpeta de tu dispositivo</div>
       <button onclick="document.getElementById('fileFolder').click()" style="margin-top:8px;padding:10px 22px;border-radius:22px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;font-size:13px;font-family:var(--font);backdrop-filter:blur(10px);">
@@ -1437,8 +1558,10 @@ function renderGrid() {
       ? `<img src="${c.img}" alt="">`
       : `${iconSvg('music')}<span class="add-img-hint">+ imagen</span>`;
 
-    const mm = Math.floor(c.dur/60), ss = String(c.dur%60).padStart(2,'0');
     const esFav = !!c.favorita;
+    const infoExtra = vistaEspecial === 'replay'
+      ? `Reproducido ${c.reproducciones} ${c.reproducciones === 1 ? 'vez' : 'veces'}`
+      : (() => { const mm = Math.floor(c.dur/60), ss = String(c.dur%60).padStart(2,'0'); return `${mm}:${ss}`; })();
 
     card.innerHTML = `
       <div class="s-thumb">${thumbInner}</div>
@@ -1446,7 +1569,7 @@ function renderGrid() {
         <div class="s-name">${escapeHTML(c.nombre)}</div>
         <div class="s-artist">${escapeHTML(c.artista)}</div>
       </div>
-      <span style="font-size:11px;color:var(--muted);flex-shrink:0;">${mm}:${ss}</span>
+      <span style="font-size:11px;color:var(--muted);flex-shrink:0;">${infoExtra}</span>
       <button class="s-star" title="${esFav ? 'Quitar de favoritas' : 'Agregar a favoritas'}" style="opacity:${esFav ? '1' : '.45'}">★</button>
       ${i === idx ? '<div class="wave"><span></span><span></span><span></span><span></span></div>' : ''}
       <button class="s-menu-btn" onclick="openSongMenu(event, ${i})">⋮</button>
@@ -1468,8 +1591,6 @@ function renderGrid() {
 
 /* ══════════════════════════════
    FAVORITOS (★)
-   Marca/desmarca una canción y la sincroniza con la
-   playlist "Canciones favoritas" sin duplicarla.
 ══════════════════════════════ */
 function toggleFavorita(i) {
   const c = canciones[i];
@@ -1515,6 +1636,7 @@ audioEl.addEventListener('timeupdate', () => {
 function seleccionarCancion(i) {
   idx = i; pct = 0;
   const c = canciones[idx];
+  c.reproducciones = (c.reproducciones || 0) + 1;
   if (c.audioUrl) {
     audioEl.src = c.audioUrl;
     audioEl.play().then(() => { playing = true; actualizarMini(); });
@@ -1676,6 +1798,7 @@ function nextSong() {
   if (!canciones.length) return;
   idx = (idx+1) % canciones.length; pct = 0; playing = true;
   const c = canciones[idx];
+  c.reproducciones = (c.reproducciones || 0) + 1;
   if (c.audioUrl) { audioEl.src = c.audioUrl; audioEl.play(); }
   else { clearInterval(timer); iniciarProgreso(); }
   renderGrid(); actualizarMini();
@@ -1685,6 +1808,7 @@ function prevSong() {
   if (!canciones.length) return;
   idx = (idx-1+canciones.length) % canciones.length; pct = 0; playing = true;
   const c = canciones[idx];
+  c.reproducciones = (c.reproducciones || 0) + 1;
   if (c.audioUrl) { audioEl.src = c.audioUrl; audioEl.play(); }
   else { clearInterval(timer); iniciarProgreso(); }
   renderGrid(); actualizarMini();
@@ -1694,6 +1818,7 @@ function shufflePlay() {
   if (!canciones.length) return;
   idx = Math.floor(Math.random()*canciones.length); pct = 0; playing = true;
   const c = canciones[idx];
+  c.reproducciones = (c.reproducciones || 0) + 1;
   if (c.audioUrl) { audioEl.src = c.audioUrl; audioEl.play(); }
   else { clearInterval(timer); iniciarProgreso(); }
   renderGrid(); actualizarMini();
@@ -1725,9 +1850,6 @@ function seekTo(e) {
 
 /* ══════════════════════════════
    BÚSQUEDA UNIVERSAL
-   Busca canciones reales cargadas en TODAS las playlists,
-   y también playlists por nombre. Se actualiza dinámicamente
-   cada vez que el usuario escribe.
 ══════════════════════════════ */
 const si = document.getElementById('srchInput');
 const od = document.getElementById('omniDrop');
