@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Portafolio digital de David Velasco, estudiante de Ingeniería en Sistemas en UPSLP enfocado en UI/UX, optimización de hardware y desarrollo lógico."
+    />
+    <title>David Velasco | Ingeniería en Sistemas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@300;500;700;800&family=Space+Mono&display=swap"
+      rel="stylesheet"/>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+
+  <body>
+    <div class="preloader" data-preloader aria-label="Cargando portafolio">
+      <div class="preloader__shell">
+        <div class="three-dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p>Inicializando interfaz de sistema</p>
+      </div>
+    </div>
+
+    <div class="ambient ambient--one"></div>
+    <div class="ambient ambient--two"></div>
+    <div class="ambient-grid" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand-mark" href="#top" aria-label="Inicio">
+        <span class="brand-mark__glyph">DV</span>
+        <span class="brand-mark__text">Velasco David</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a href="#experiencia"><span>*</span> UI/UX</a>
+        <a href="#sistemas"><span>#</span> Sistemas</a>
+        <a href="#archivos"><span>/</span> Proyectos</a>
+        <a href="#negocio"><span>$</span> Negocio</a>
+        <a href="#contacto"><span>@</span> Contacto</a>
+      </nav>
+
+      <button
+        class="theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="Cambiar tema"
+      >
+        <span class="theme-toggle__track">
+          <span class="theme-toggle__icon theme-toggle__icon--sun">☼</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon">◐</span>
+          <span class="theme-toggle__thumb"></span>
+        </span>
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero section-pad" aria-labelledby="hero-title">
+        <div class="hero__content">
+          <p class="eyebrow">
+            Portafolio / Ing. en Sistemas (UPSLP) / Velasco David
+          </p>
+          <h1 id="hero-title" class="hero__title">
+            Si Lo Puedes Imaginar
+            <span>Lo Puedes Programar</span>
+          </h1>
+          <p class="hero__tagline">
+            Estudiante de 3er cuatrimestre de Ingeniería en Tecnologías de la
+            información enfocado en la intersección del diseño interactivo
+            (UI/UX) y la optimización de procesamiento en software.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary magnetic" href="#archivos">
+              <span>Explorar proyectos</span>
+              <span aria-hidden="true">↘</span>
+            </a>
+            <a class="btn btn--ghost magnetic" href="#skills">
+              <span>Ver matriz técnica</span>
+              <span aria-hidden="true">⌘</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-console glass-card" aria-label="Resumen técnico">
+          <div class="console-header">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <pre><code>
+const profile = {
+  role:"ITIID UPSLP",
+  method:["UI/UX", "Lógica","Optimización"],
+  focus:"Hardware / Rendimiento",
+  stack:{
+    web:["HTML","CSS", "Liquid Glass"],
+    software:["Java","C","Local LLMs"],
+    deploy:["Hosting","Dominios"]
+  }
+};
+        </code></pre>
+          <div class="console-metrics">
+            <span>UI/UX</span>
+            <span>Backend</span>
+            <span>Hardware</span>
+          </div>
+        </aside>
+      </section>
+
+      <section
+        id="experiencia"
+        class="pillar section-pad"
+        aria-labelledby="ux-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">Mi Fuerte 01</p>
+          <h2 id="ux-title">El diseñador de experiencias</h2>
+          <p>
+            Interfaces limpias, componentes legibles y microinteracciones que
+            convierten informacion compleja en experiencias memorables para el
+            usuario.
+          </p>
+        </div>
+
+        <div id="proyectos" class="featured-grid common-region">
+          <article class="music-card glass-card liquid-card">
+            <div class="music-card__visual">
+              <div class="album-stack">
+                <div class="album album--one"><img src="AppM2.png" /></div>
+                <div class="album album--two"><img src="AppM.png" /></div>
+                <div class="album album--three"><img src="ApMLogo.png" /></div>
+              </div>
+              <div class="music-player glass-card">
+                <div>
+                  <strong>Apple Music Redesign</strong>
+                  <span>Diseño moderno / Interfaz funcional</span>
+                </div>
+                <a
+                  class="btn"
+                  href="https://velascoddavid.github.io/proyecTopicos/index.html"
+                  ><button type="button" aria-label="Reproducir demo">
+                    ▶
+                  </button></a
+                >
+              </div>
+            </div>
+            <div class="project-copy">
+              <span class="project-kicker">Front-End / UX</span>
+              <h3>Rediseño de Apple Music Desktop</h3>
+              <p>
+                Diseño enfocado en reducir la carga cognitiva mediante
+                componentes orgánicos fluidos e inspiraciones estéticas de alto
+                nivel.
+              </p>
+              <div class="tag-row" aria-label="Tecnologías usadas">
+                <span>HTML/CSS</span>
+                <span>Leyes UX</span>
+                <span>Responsividad</span>
+                <span>Efectos de Tranparencia</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="compact-card glass-card zoom-card">
+            <div class="compact-card__media media-gradient--blue"> <img src="capAppM.png" /></div>
+            <div>
+              <span class="project-kicker">Estética visual</span>
+              <h3>Minimalismo Interactivo</h3>
+              <p>
+                Layouts inspirados, aplicando las Leyes de UX para crear
+                interfaces intuitivas, accesibles y estéticamente limpias
+                (optimizadas).
+              </p>
+            </div>
+          </article>
+
+          <article class="compact-card glass-card zoom-card">
+            <div class="compact-card__media media-gradient--cyan"><img src="codigo.png"/></div>
+            <div>
+              <span class="project-kicker">Rendimiento web</span>
+              <h3>Ligereza de carga</h3>
+              <p>
+                Código estructurado sin dependencias innecesarias, preservando
+                la memoria RAM y batería del hardware del usuario final.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="sistemas"
+        class="pillar section-pad"
+        aria-labelledby="systems-title"
+      >
+        <div class="split-heading">
+          <div>
+            <p class="eyebrow">Mi Fuerte 02</p>
+            <h2 id="systems-title">Ingeniería aplicada a optimización</h2>
+          </div>
+          <p>
+            Desarrollo en Java, C y Lenguaje Ensamblador, enfocado en maximizar
+            el rendimiento del hardware moderno, telemetría y ejecución de IA
+            local.
+          </p>
+        </div>
+
+        <div class="slider-shell glass-card" data-slider>
+          <div class="slider-toolbar">
+            <div>
+              <span class="project-kicker">Hardware & Backend</span>
+              <h3>Arquitectura y Recursos</h3>
+            </div>
+            <div class="slider-controls">
+              <button
+                type="button"
+                class="icon-btn"
+                data-prev
+                aria-label="Proyecto anterior"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                class="icon-btn"
+                data-next
+                aria-label="Proyecto siguiente"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          <div class="slider-viewport">
+            <div class="slider-track" data-slider-track>
+              <article class="system-card glass-card">
+                <span class="system-card__index">01</span>
+                <h4>Recursos Optimizados</h4>
+                <p>
+                  Gestión lógica de cargas de trabajo heterogéneas distribuidas
+                  inteligentemente entre los componentes CPU, GPU y NPU.
+                </p>
+                <div class="metric-list">
+                  <div class="metric" style="--value: 80%">
+                    <span>Aprovechamiento de CPU +80%</span>
+                    <i></i>
+                  </div>
+                  <div class="metric" style="--value: 90%">
+                    <span>Carga IA al NPU +90%</span>
+                    <i></i>
+                  </div>
+                </div>
+              </article>
+
+              <article class="system-card glass-card">
+                <span class="system-card__index">02</span>
+                <h4>IA 100% Local</h4>
+                <p>
+                  Benchmarking de modelos locales (Qwen, Gemma, Llama)
+                  ejecutados offline a través de entornos como LM Studio y
+                  Ollama.
+                </p>
+                <div class="metric-list">
+                  <div class="metric" style="--value: 100%">
+                    <span>Aprovechamiento Offline +100%</span>
+                    <i></i>
+                  </div>
+                  <div class="metric" style="--value: 100%">
+                    <span>Tokens Ilimitados +100%</span>
+                    <i></i>
+                  </div>
+                </div>
+              </article>
+
+              <article class="system-card glass-card">
+                <span class="system-card__index">03</span>
+                <h4>Telemetría de Simulación</h4>
+                <p>
+                  Análisis físico, handling de hardware y extracción de métricas
+                  de rendimiento basadas en pruebas de rendimiento, aplicados
+                  para una optimización mejorada.
+                </p>
+                <div class="metric-list">
+                  <div class="metric" style="--value: 30%">
+                    <span>Reducción térmica -30%</span>
+                    <i></i>
+                  </div>
+                  <div class="metric" style="--value: 50%">
+                    <span>Rendimiento promedio +50%</span>
+                    <i></i>
+                  </div>
+                </div>
+              </article>
+
+              <article class="system-card glass-card">
+                <span class="system-card__index">04</span>
+                <h4>Lógica Aplicada (Java/C)</h4>
+                <p>
+                  Desarrollo de interfaces funcionales en Java, programas
+                  estructurales en C y configuracion en Lenguaje Esamblador para
+                  el entendimiento del manejo de memoria a bajo nivel.
+                </p>
+                <div class="metric-list">
+                  <div class="metric" style="--value: 78%">
+                    <span>Estructura Lógica </span>
+                    <i></i>
+                  </div>
+                  <div class="metric" style="--value: 89%">
+                    <span>Gestión de Memoria</span>
+                    <i></i>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="archivos"
+        class="files section-pad"
+        aria-labelledby="files-title">
+        <div class="section-heading">
+          <p class="eyebrow">Colección de Proyectos</p>
+          <h2 id="files-title">Explorador de Proyectos</h2>
+          <p>
+            Documentación técnica de los proyectos académicos y personales,
+            organizados por categoría de desarrollo.
+          </p>
+        </div>
+
+        <div class="files-toolbar">
+          <div
+            class="folder-row"
+            role="tablist"
+            aria-label="Carpetas de proyectos">
+            <div
+              class="folder"
+              data-folder="frontend"
+              tabindex="0"
+              role="tab"
+              aria-selected="false">
+              <div class="folder__icon"></div>
+              <span class="folder__name scramble-text" data-text="UI_UX"
+                >UI_UX</span
+              >
+            </div>
+            <div
+              class="folder"
+              data-folder="backend"
+              tabindex="0"
+              role="tab"
+              aria-selected="false"
+            >
+              <div class="folder__icon"></div>
+              <span
+                class="folder__name scramble-text"
+                data-text="HARDWARE_LOGIC"
+                >HARDWARE_LOGIC</span>
+            </div>
+            <div
+              class="folder"
+              data-folder="otros"
+              tabindex="0"
+              role="tab"
+              aria-selected="false">
+              <div class="folder__icon"></div>
+              <span
+                class="folder__name scramble-text"
+                data-text="EMPRENDIMIENTO"
+                >EMPRENDIMIENTO</span>
+            </div>
+          </div>
+
+          <button type="button" class="folder-exit" data-folder-exit>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            <span>Cerrar directorio</span>
+          </button>
+        </div>
+
+        <div class="work-list" data-work-list="frontend">
+          <div
+            class="work-item"
+            data-title="Apple Music Redesign"
+            data-src="appleM.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="APPLE_MUSIC_UI.PDF">
+                APPLE_MUSIC_UI.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </div>
+            <p>
+              Rediseño aplicando estética, efectos Liquid Glass, tarjetas
+              translúcidas y optimización.
+            </p>
+          </div>
+
+          <div
+            class="work-item"
+            data-title="Minimalismo Interactivo"
+            data-src="minimalismo.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="LEYES_UX_DOC.PDF">
+                LEYES_UX_DOC.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Análisis y aplicación de leyes de UX en proyectos y portafolios
+              digitales.
+            </p>
+          </div>
+
+          <div
+            class="work-item"
+            data-title="Minimalismo Interactivo"
+            data-src="nhl.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="DISEÑO_NHL.PDF">
+                DISEÑO_NHL.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Practica de creación de diseño express, sobre el rediseño de la
+              interfaz de NHL.com, aplicando principios de UI y optimización de
+              carga (Sprint Design).
+            </p>
+          </div>
+        </div>
+
+        <div class="work-list" data-work-list="backend">
+          <div
+            class="work-item"
+            data-title="Optimización de Recursos"
+            data-src="neuros.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="NEUROS.PDF">
+                NEUROS.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Proyecto integrador de optimización de recursos para computadoras portatiles, mediante la gestión de cargas de CPU, GPU y NPU.
+            </p>
+          </div>
+
+          <div
+            class="work-item"
+            data-title="Evaluación IA Local"
+            data-src="ia-local.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="LLMS_OFFLINE_BENCH.PDF">
+                LLMS_OFFLINE_BENCH.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Analisis y reporte de rendimiento de modelos Qwen, Gemma y Llama en LM Studio y Ollama, ejecutados de manera local y offline.
+            </p>
+          </div>
+
+          <div
+            class="work-item"
+            data-title="Programación en Java"
+            data-src="java-structures.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="JAVA_STRUCTURES.PDF">
+                JAVA_STRUCTURES.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Desarrollo de interfaces gráficas y programas lógicos
+              estructurados en lenguaje Java, aplicando principios de optimización de memoria y procesamiento.
+            </p>
+          </div>
+        </div>
+
+        <div class="work-list" data-work-list="otros">
+          <div
+            class="work-item"
+            data-title="BroWeb"
+            data-src="broweb.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="BROWEB.PDF">
+                BROWEB.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Modelo de venta de sitios web para negocios locales mediante desarrollo de UI/UX, hosting y dominios personalizados.
+            </p>
+          </div>
+
+          <div
+            class="work-item"
+            data-title="Alfabetización Digital"
+            data-src="brolearn.pdf"
+          >
+            <div class="work-item__head">
+              <h4 class="scramble-text" data-text="BROLEARN.PDF">
+                brolearn.PDF
+              </h4>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+              >
+                <path
+                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+              </svg>
+            </div>
+            <p>
+              Estructuración de curso formativo de 3 niveles: manejo básico ofimático, herramientas de productividad y mantenimiento / diagnóstico de sistemas.
+            </p>
+          </div>
+        </div>
+
+        <div id="file-viewer">
+          <div class="os-window">
+            <div class="os-window__header">
+              <div class="os-window__controls">
+                <div
+                  class="os-btn os-btn--close"
+                  data-viewer-close
+                  title="Cerrar ventana">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </div>
+                <div
+                  class="os-btn os-btn--download"
+                  data-viewer-download
+                  title="Descargar documento">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 5v14m0 0l-4-4m4 4l4-4" />
+                  </svg>
+                </div>
+                <div
+                  class="os-btn os-btn--open"
+                  data-viewer-open
+                  title="Abrir en nueva pestaña">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7 17L17 7m0 0H9m8 0v8" />
+                  </svg>
+                </div>
+              </div>
+              <span
+                class="os-window__title scramble-text"
+                id="viewer-title"
+                data-text="visor.exe"
+                >visor.exe</span>
+              <div style="width: 40px"></div>
+            </div>
+            <iframe
+              class="os-window__iframe"
+              id="viewer-iframe"
+              src=""></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="negocio"
+        class="business section-pad"
+        aria-labelledby="business-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">Mi Fuerte 03</p>
+          <h2 id="business-title">Visión de negocio local</h2>
+          <p>
+            Capacidad para traducir habilidades técnicas de la 
+            "Ingeniería en Tecnologías de la información" a soluciones 
+            digitales accesibles, rápidas y económicamente viables.
+          </p>
+        </div>
+
+        <div class="business-grid">
+          <article class="business-card glass-card">
+            <span class="business-card__number">01</span>
+            <h3>BroWeb</h3>
+            <p>
+              Creación de sitios web ultra optimizados para comercios locales.
+              Uso estratégico de infraestructura eficiente: despliegues seguros
+              y dominios personalizados.
+            </p>
+            <div class="business-card__footer">
+              <span>Hosting</span>
+              <span>Dominios</span>
+              <span>UI/UX Comercial</span>
+            </div>
+          </article>
+
+          <article class="business-card glass-card">
+            <span class="business-card__number">02</span>
+            <h3>Cursos de Alfabetización Digital</h3>
+            <p>
+              Desarrollo de un programa formativo en 3 niveles: manejo básico
+              ofimático, herramientas de productividad y mantenimiento /
+              diagnóstico de sistemas.
+            </p>
+            <div class="level-map" aria-label="Niveles del curso">
+              <span>Nivel 1</span>
+              <span>Nivel 2</span>
+              <span>Nivel 3</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="team section-pad" aria-labelledby="team-title">
+        <div class="team-panel">
+          <p class="eyebrow">Soft skills académicas</p>
+          <h2 id="team-title">Liderazgo técnico y colaboración.</h2>
+          <p>
+            Experiencia en trabajo en equipo, liderazgo de proyectos y
+            colaboración, aplicando metodologías ágiles y
+            comunicación efectiva para lograr objetivos comunes, 
+            así como la integración de habilidades técnicas y creativas 
+            en entornos académicos y profesionales.
+          </p>
+          <div class="team-strip" aria-label="Flujo de colaboracion">
+            <span>Rúbricas</span>
+            <span>Trabajo rápido y eficiente</span>
+            <span>Integración y aplicación de conocimientos</span>
+            <span>Comunicación efectiva</span>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="skills"
+        class="skills section-pad"
+        aria-labelledby="skills-title"
+      >
+        <div class="split-heading">
+          <div>
+            <p class="eyebrow">Skills Matrix</p>
+            <h2 id="skills-title">Matriz de Habilidades</h2>
+          </div>
+          <p>
+            Tecnologías y conceptos aplicados directamente para lograr el
+            equilibrio entre estética interactiva y optimización de hardware.
+          </p>
+        </div>
+
+        <div class="skills-matrix">
+          <article class="skill-column glass-card">
+            <span class="skill-column__tag">Front-End & UX</span>
+            <h3>HTML / CSS</h3>
+            <ul>
+              <li>Minimalismo Interactivo</li>
+              <li>Efectos estéticos modernizados</li>
+              <li>Leyes de UX aplicadas</li>
+              <li>Versiones optimizadas para todos los dispositivos</li>
+            </ul>
+          </article>
+
+          <article class="skill-column glass-card">
+            <span class="skill-column__tag">Software & Lógica</span>
+            <h3>Java / C</h3>
+            <ul>
+              <li>Interfaces GUI funcionales</li>
+              <li>Estructuras lógicas en C</li>
+              <li>Telemetría aplicada</li>
+              <li>Documentación técnica</li>
+            </ul>
+          </article>
+
+          <article class="skill-column glass-card">
+            <span class="skill-column__tag">Hardware & Despliegue</span>
+            <h3>Optimización de Recursos</h3>
+            <ul>
+              <li>Gestión de RAM/Batería</li>
+              <li>Cargas de CPU/GPU/NPU</li>
+              <li>Intel Core / Ryzen IA</li>
+              <li>Despliegue (Hosting web)</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="contacto"
+        class="contact section-pad"
+        aria-labelledby="contact-title"
+      >
+        <div class="contact-card glass-card">
+          <p class="eyebrow">Contacto final</p>
+          <h2 id="contact-title">
+            ¿Listo para llevar tu hardware e interfaces al siguiente nivel?
+          </h2>
+          <p>
+            Disponible para colaborar en proyectos académicos integradores,
+            diseño de UI/UX, venta de sitios para comercios locales y
+            mantenimiento técnico.
+          </p>
+          <div class="contact-actions">
+            <a class="btn btn--primary magnetic" href="mailto:davieto1301@gmail.com">
+              <span>Contactame</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <a class="btn btn--ghost magnetic" href="#top">
+              <span>Volver arriba</span>
+              <span aria-hidden="true">↑</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+  <footer class="site-footer" aria-label="Pie de página" id="footer">
+    <!-- Inicia sección de Redes Sociales -->
+    <div class="footer__socials">
+
+      <a href="https://github.com/Velascoddavid" target="_blank" aria-label="GitHub" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+      </a>
+      
+      <!--<a href="https://www.linkedin.com/in/david-velasco-0b0b0b/" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+          <rect x="2" y="9" width="4" height="12"></rect>
+          <circle cx="4" cy="4" r="2"></circle>
+        </svg>
+      </a>!-->
+
+      <a href="https://www.instagram.com/velascoddavid/" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </a>
+
+      <a href="https://api.whatsapp.com/send?phone=524447049396&text=Hola%20David,%20quiero%20trabajar%20contigo%20%20para%20un%20proyecto." target="_blank" aria-label="WhatsApp" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+      </a>
+
+      <a href="somoselbro.com" target="_blank" aria-label="Sitio Web" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </a>
+
+    </div>
+  <!-- Termina sección de Redes Sociales -->
+    <p class="footer__copy">
+      &copy;
+     2026 David Velasco&copy;. Todos los derechos reservados al profe Mercado.
+    </p>
+  </footer>
+</html>
