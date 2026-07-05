@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="oscuro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio UI/UX | Diseño de Software</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;500;700;800&family=Space+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        /* =========================================
+            SISTEMA DE VARIABLES Y NUEVA PALETA
+           ========================================= */
+        :root {
+            --fuente-titulos: 'Space Mono', sans-serif;
+            --fuente-texto: 'Space Mono', sans-serif;
+            --fuente-codigo: 'Space Mono', monospace;
+        }
+
+        [data-tema="oscuro"] {
+            --fondo-principal: #111513;
+            /* Base Dark Mode */
+            --superficie: #171C1A;
+            /* Cards Dark Mode */
+            --lineas: #25302C;
+            /* Divisores Dark Mode */
+
+            --color-acento: #5FA08C;
+            /* Activo / Verde principal Dark */
+            --color-hover: #3E6E5F;
+            /* Variante sutil para hover */
+
+            --texto-principal: #DDE5DF;
+            /* Alto contraste */
+            --texto-secundario: #9AA69F;
+            /* Metadata */
+
+            /* Cristal adaptado a oscuros */
+            --cristal-bg: rgba(23, 28, 26, 0.4);
+            --cristal-borde: rgba(95, 160, 140, 0.15);
+            --cristal-sombra: rgba(0, 0, 0, 0.5);
+
+            /* Orbes de fondo oscuros */
+            --brillo-1: rgba(95, 160, 140, 0.1);
+            --brillo-2: rgba(37, 48, 44, 0.3);
+
+            /* Brillo suave para botones y navbar (en vez de sombra dura) */
+            --glow: rgba(95, 160, 140, 0.55);
+            --glow-suave: rgba(95, 160, 140, 0.28);
+        }
+
+        [data-tema="claro"] {
+            --fondo-principal: #F3F1EA;
+            /* Marfil técnico */
+            --superficie: #E8E4DB;
+            /* Superficie clara */
+            --lineas: #D7D1C5;
+            /* Borde suave */
+
+            --color-acento: #2F5D50;
+            /* Verde petróleo */
+            --color-hover: #4C8B78;
+            /* Verde activo */
+
+            --texto-principal: #1E2423;
+            /* Grafito */
+            --texto-secundario: #6F756F;
+            /* Texto secundario */
+
+            /* Cristal adaptado a claros */
+            --cristal-bg: rgba(232, 228, 219, 0.9);
+            --cristal-borde: rgba(47, 93, 80, 0.4);
+            --cristal-sombra: rgba(47, 93, 80, 0.05);
+
+            /* Orbes de fondo claros */
+            --brillo-1: rgba(76, 139, 120, 0.15);
+            --brillo-2: rgba(215, 209, 197, 0.4);
+
+            /* Brillo suave para botones y navbar */
+            --glow: rgba(47, 93, 80, 0.4);
+            --glow-suave: rgba(47, 93, 80, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--fuente-texto);
+            color: var(--texto-principal);
+            background-color: var(--fondo-principal);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* =========================================
+           FONDOS ANIMADOS
+           ========================================= */
+        .orbes-fondo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orbe {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.8;
+            transition: background 0.8s ease;
+            animation: flotar 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .orbe-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: var(--brillo-1);
+        }
+
+        .orbe-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: var(--brillo-2);
+            animation-delay: -10s;
+        }
+
+        @keyframes flotar {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(5%, 10%) scale(1.1);
+            }
+        }
+
+        /* =========================================
+           UTILIDADES Y EFECTOS
+           ========================================= */
+        .efecto-cristal {
+            background: var(--cristal-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--cristal-borde);
+            box-shadow: 0 12px 40px 0 var(--cristal-sombra);
+        }
+
+        .texto-scramble {
+            font-family: var(--fuente-codigo);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .interactivo {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .interactivo:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 22px var(--glow-suave), 0 0 2px var(--glow);
+            border-color: var(--color-acento);
+        }
+
+        .interactivo:active {
+            transform: translateY(0) scale(0.97);
+        }
+
+        /* =========================================
+           CABECERA
+           ========================================= */
+        header {
+            padding: 3rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--lineas);
+        }
+
+        .titulo-grande {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .titulo-grande span {
+            font-weight: 800;
+            color: var(--color-acento);
+        }
+
+        .boton-tema {
+            background: var(--superficie);
+            border: 1px solid var(--lineas);
+            color: var(--texto-principal);
+            padding: 0.8rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .icono-svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+        }
+
+        /* =========================================
+           PROYECTOS DESTACADOS
+           ========================================= */
+        .seccion-destacados {
+            padding: 4rem 5% 1rem 5%;
+        }
+
+        .titulo-seccion {
+            font-family: var(--fuente-titulos);
+            font-size: 1.2rem;
+            color: var(--texto-secundario);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .cuadricula-destacados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tarjeta-destacada {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16/11;
+            border: 1px solid var(--lineas);
+            background: var(--superficie);
+            cursor: pointer;
+        }
+
+        .img-destacada {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) opacity(0.8);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .info-destacada {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: var(--cristal-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid var(--cristal-borde);
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tarjeta-destacada:hover .img-destacada {
+            filter: grayscale(0%) opacity(1);
+            transform: scale(1.05);
+        }
+
+        .tarjeta-destacada:hover .info-destacada {
+            transform: translateY(0);
+        }
+
+        .tarjeta-destacada:hover {
+            border-color: var(--color-acento);
+            box-shadow: 0 0 30px var(--glow-suave);
+        }
+
+        .info-destacada h3 {
+            font-family: var(--fuente-titulos);
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+            font-weight: 800;
+            color: var(--texto-principal);
+        }
+
+        .info-destacada p {
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-destacada span {
+            font-family: var(--fuente-codigo);
+            font-size: 0.75rem;
+            color: var(--color-acento);
+            font-weight: 700;
+        }
+
+        /* =========================================
+           CARPETAS Y ARCHIVOS
+           ========================================= */
+        .seccion-archivos {
+            padding: 3rem 5%;
+            
+        }
+
+        .contenedor-carpetas {
+            display: flex;
+            gap: 2.5rem;
+            border-bottom: 1px solid var(--lineas);
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .carpeta {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            color: var(--texto-secundario);
+            width: 120px;
+            transition: color 0.3s;
+        }
+
+        .carpeta.activa,
+        .carpeta:hover {
+            color: var(--texto-principal);
+        }
+
+        .icono-carpeta {
+            width: 100%;
+            height: 75px;
+            background: var(--superficie);
+            border: 1px solid var(--lineas);
+            border-radius: 6px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .icono-carpeta::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -1px;
+            width: 35%;
+            height: 10px;
+            border: 1px solid var(--lineas);
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            transition: all 0.3s;
+        }
+
+        /* Estado activo según la paleta */
+        .carpeta.activa .icono-carpeta,
+        .carpeta.activa .icono-carpeta::before {
+            border-color: var(--color-acento);
+            background: var(--color-hover);
+            box-shadow: 0 0 18px var(--glow-suave);
+        }
+
+        .nombre-carpeta {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Trabajos (Archivos) */
+        .lista-trabajos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute;
+            visibility: hidden;
+        }
+
+        .lista-trabajos.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+            position: relative;
+            visibility: visible;
+        }
+
+        .item-trabajo {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: var(--superficie);
+            border: 1px solid var(--lineas);
+        }
+
+        .item-trabajo.activo {
+            border-color: var(--color-acento);
+            background: var(--color-hover);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .icono-archivo {
+            width: 24px;
+            height: 24px;
+            color: var(--color-acento);
+        }
+
+        .item-trabajo h4 {
+            font-family: var(--fuente-codigo);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .item-trabajo p {
+            font-size: 0.8rem;
+            color: var(--texto-secundario);
+            margin-top: 0.5rem;
+        }
+
+        /* =========================================
+           VENTANA VISOR Y BOTONES OS
+           ========================================= */
+        #visor-contenedor {
+            width: 100%;
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            margin-bottom: 4rem;
+        }
+
+        #visor-contenedor.activo {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .ventana-so {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--lineas);
+            background: var(--fondo-principal);
+        }
+
+        .ventana-header {
+            background: var(--superficie);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--lineas);
+        }
+
+        /* Contenedor interactivo de botones */
+        .ventana-controles {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .control-btn svg {
+            width: 8px;
+            height: 8px;
+            stroke: #000;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Mostrar iconos solo al pasar el mouse por el contenedor de botones */
+        .ventana-controles:hover .control-btn svg {
+            opacity: 0.7;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .btn-rojo {
+            background: #FF5F56;
+        }
+
+        .btn-rojo:hover {
+            box-shadow: 0 0 10px rgba(255, 95, 86, 0.8);
+        }
+
+        .btn-amarillo {
+            background: #FFBD2E;
+        }
+
+        .btn-amarillo:hover {
+            box-shadow: 0 0 10px rgba(255, 189, 46, 0.8);
+        }
+
+        .btn-verde {
+            background: #27C93F;
+        }
+
+        .btn-verde:hover {
+            box-shadow: 0 0 10px rgba(39, 201, 63, 0.8);
+        }
+
+        .ventana-titulo {
+            font-family: var(--fuente-codigo);
+            font-size: 0.75rem;
+            color: var(--texto-secundario);
+            letter-spacing: 1px;
+        }
+
+        .visor-iframe {
+            width: 100%;
+            height: 70vh;
+            min-height: 500px;
+            border: none;
+            background: #fff;
+            display: block;
+        }
+
+        /* =========================================
+           SOBRE MÍ (Perfil) Y FOOTER
+           ========================================= */
+        .seccion-perfil-top {
+            padding: 3rem 5% 1rem 5%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tarjeta-perfil {
+            padding: 3rem;
+            border-radius: 24px;
+            background: var(--superficie);
+            border: 1px solid var(--lineas);
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+            align-self: center;
+            align-items: center;
+        }
+
+        .perfil-titulo {
+            font-size: 2rem;
+            font-family: var(--fuente-titulos);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .perfil-texto {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--texto-secundario);
+            margin-bottom: 1.5rem;
+        }
+
+        .seccion-contacto {
+            padding: 2rem 5% 10rem 5%;
+        }
+
+        .caja-enlaces {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 6fr));
+            gap: 1.5rem;
+            max-width: auto;
+        }
+
+        .enlace-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--texto-principal);
+        }
+
+        .icono-footer {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            background: var(--superficie);
+            border: 1px solid var(--lineas);
+        }
+
+        .icono-footer svg {
+            width: 28px;
+            height: 28px;
+            stroke-width: 1.2;
+        }
+
+        .etiqueta-footer {
+            font-family: var(--fuente-codigo);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--texto-secundario);
+            transition: color 0.3s;
+        }
+
+        .enlace-footer:hover .etiqueta-footer {
+            color: var(--color-acento);
+        }
+
+        /* =========================================
+           BARRA DE NAVEGACIÓN EXPANSIBLE
+           ========================================= */
+        .contenedor-nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        .barra-navegacion {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.6rem;
+            border-radius: 99px;
+            background: var(--cristal-bg);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--cristal-borde);
+            box-shadow: 0 0 26px var(--glow-suave), 0 6px 18px var(--cristal-sombra);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .barra-navegacion:hover {
+            box-shadow: 0 0 34px var(--glow), 0 6px 18px var(--cristal-sombra);
+        }
+
+        .enlace-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            min-width: 50px;
+            padding: 0 1rem;
+            border-radius: 99px;
+            text-decoration: none;
+            color: var(--texto-secundario);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .nav-texto {
+            font-family: var(--fuente-codigo);
+            font-size: 0.8rem;
+            max-width: 0;
+            opacity: 0;
+            white-space: nowrap;
+            transform: translateX(-10px);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .enlace-nav:hover,
+        .enlace-nav.activo {
+            background: var(--color-hover);
+            color: var(--texto-principal);
+            box-shadow: inset 0 0 0 1px var(--color-acento), 0 0 14px var(--glow-suave);
+        }
+
+        .enlace-nav:hover .nav-texto,
+        .enlace-nav.activo .nav-texto {
+            max-width: 120px;
+            opacity: 1;
+            margin-left: 12px;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 900px) {
+            .caja-enlaces {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .visor-iframe {
+                height: 50vh;
+            }
+        }
+        .footer__copy{
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--texto-secundario);
+            margin-top: 32px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Fondo adaptado al modo -->
+    <div class="orbes-fondo">
+        <div class="orbe orbe-1"></div>
+        <div class="orbe orbe-2"></div>
+    </div>
+
+    <header>
+        <h1 class="titulo-grande" data-scramble="VELASCO NIETO">Velasco Nieto David Alfredo<br><span>PORTAFOLIO TÓPICOS DE CALIDAD</span></h1>
+        <button class="boton-tema interactivo" id="btnTema">
+            <!-- Icono Sol/Luna genérico -->
+            <svg class="icono-svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+    </header>
+
+    <main>
+        <!-- SECCIÓN PERFIL-->
+        <section class="seccion-perfil-top">
+            <div class="tarjeta-perfil interactivo">
+                <span class="titulo-seccion" data-scramble="SOBRE MÍ">SOBRE MÍ</span>
+                <h2 class="perfil-titulo" style="margin-top: 1rem;">Mi Perfil de <span
+                        style="font-weight: 800; color: var(--color-acento);">Desarrollo</span></h2>
+                <p class="perfil-texto">
+                    Soy David Alfredo Velasco Nieto, estudiante de Ingeniería en Tecnologías de la información e
+                    Innovación Digital, especializado en rendimiento de software y diseño de interfaces. Busco crear
+                    experiencias fluidas y eficientes.
+                </p>
+                <p class="perfil-texto">
+                    Parte de este portafolio es crear un espacio para analizar a detalle cada uno de estos trabajos; una
+                    herramienta dinamica para navegar entre todo lo visto del curso "Topicos de calidad en desarrollo de
+                    software" del Tercer Cuatrimestre de la carrera.
+                </p>
+            </div>
+        </section>
+
+        <!-- PROYECTOS DESTACADOS -->
+        <section class="seccion-destacados">
+            <h2 class="titulo-seccion">PROYECTOS DESTACADOS</h2>
+
+            <div class="cuadricula-destacados">
+                <div class="tarjeta-destacada">
+                    <img src="ApMLogo.png" alt="Apple Music Redesign" class="img-destacada" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5f/Apple_Music_icon.svg'"
+                    onclick="window.open('https://velascoddavid.github.io/proyecTopicos/index.html', '_blank')">
+                    <div class="info-destacada" onclick="window.open('https://velascoddavid.github.io/proyecTopicos/index.html', '_blank')">
+                        <h3>Apple Music Redesign</h3>
+                        <p>Diseño UI/UX • Tópicos de Calidad</p>
+                        <span>19/06/2026</span>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <img src="nhl.png" alt="Diseño para Hockey" class="img-destacada" onerror="this.src='https://images.unsplash.com/photo-1580748141549-71748dbe0bdc?q=80&w=800&auto=format&fit=crop'"
+                    onclick="window.open('https://velascoddavid.github.io/proyecTopicos/nhl.html', '_blank')">
+                    <div class="info-destacada" onclick="window.open('https://velascoddavid.github.io/proyecTopicos/nhl.html', '_blank')">
+                        <h3>Dashboard Hockey</h3>
+                        <p>Topicos de Diseño • Software</p>
+                        <span>3/06/2026</span>
+                    </div>
+                </div>
+
+                <div class="tarjeta-destacada">
+                    <img src="npu.png" alt="Optimizador CPU/GPU" class="img-destacada"
+                        onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop'"
+                        onclick="window.open('https://velascoddavid.github.io/proyecTopicos/neuros.pdf', '_blank')">
+                    <div class="info-destacada" onclick="window.open('https://velascoddavid.github.io/proyecTopicos/neuros.pdf', '_blank')">
+                        <h3>Optimizador CPU/GPU</h3>
+                        <p>Proyecto • Integrador</p>
+                        <span>10/06/2026</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SISTEMA DE ARCHIVOS -->
+        <section class="seccion-archivos">
+            <span class="titulo-seccion" data-scramble="SISTEMA DE ARCHIVOS">SISTEMA DE ARCHIVOS</span>
+            <div class="contenedor-carpetas">
+                <div class="carpeta interactivo" onclick="abrirCarpeta(1, this)"
+                    onmouseenter="efectoScramble(this.querySelector('.nombre-carpeta'))">
+                    <div class="icono-carpeta"></div>
+                    <span class="nombre-carpeta texto-scramble" data-texto="PARCIAL_01">PARCIAL_01</span>
+                </div>
+                <div class="carpeta interactivo" onclick="abrirCarpeta(2, this)"
+                    onmouseenter="efectoScramble(this.querySelector('.nombre-carpeta'))">
+                    <div class="icono-carpeta"></div>
+                    <span class="nombre-carpeta texto-scramble" data-texto="PARCIAL_02">PARCIAL_02</span>
+                </div>
+                <div class="carpeta interactivo" onclick="abrirCarpeta(3, this)"
+                    onmouseenter="efectoScramble(this.querySelector('.nombre-carpeta'))">
+                    <div class="icono-carpeta"></div>
+                    <span class="nombre-carpeta texto-scramble" data-texto="PARCIAL_03">PARCIAL_03</span>
+                </div>
+            </div>
+
+            <div id="lista-1" class="lista-trabajos">
+                <div class="item-trabajo interactivo"
+                    onclick="mostrarDocumento('Apple Music Redesign - PDF', 'appleM.pdf', this)">
+                    <div class="item-header">
+                        <h4 class="texto-scramble" data-texto="APL_MUSIC.PDF">APPLE_MUSIC.PDF</h4>
+                        <svg class="icono-archivo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <p>Rediseño aplicando estética, efectos Liquid Glass, tarjetas translúcidas y optimización.</p>
+                </div>
+
+                <div class="item-trabajo interactivo" onclick="mostrarDocumento('NHL.com Diseño', 'https://velascoddavid.github.io/proyecTopicos/nhl.html', this)">
+                    <div class="item-header">
+                        <h4 class="texto-scramble" data-texto="NHL.PDF">nhl.pdf</h4>
+                        <svg class="icono-archivo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <p>Practica de creación de diseño express, sobre el rediseño de la
+                        interfaz de NHL.com, aplicando principios de UI y optimización de
+                        carga (Sprint Design).
+                    </p>
+                </div>
+            </div>
+
+            <div id="lista-2" class="lista-trabajos">
+                <div class="item-trabajo interactivo"
+                    onclick="mostrarDocumento('Documentación del proyecto', 'https://velascoddavid.github.io/proyecTopicos/documentacion.pdf', this)">
+                    <div class="item-header">
+                        <h4 class="texto-scramble" data-texto="DOCUMENTACION.PDF">DOCUMENTACION.PDF</h4>
+                        <svg class="icono-archivo" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <p>Documentación final del proyecto de reinvención de la interfaz de Apple Music.</p>
+                </div>
+            </div>
+
+            <div id="lista-3" class="lista-trabajos">
+                <div class="item-trabajo interactivo">
+                    <div class="item-header">
+                        <h4 class="texto-scramble" data-texto="EN_PROGRESO">EN_PROGRESO</h4>
+                    </div>
+                    <p>Archivos pendientes...</p>
+                </div>
+            </div>
+
+            <!-- VISOR PARA LA VENTANA DE OPCIONES (ARCHIVO) -->
+            <div id="visor-contenedor">
+                <div class="ventana-so">
+                    <div class="ventana-header">
+                        <div class="ventana-controles">
+                            <!-- Botón Rojo (Cerrar) -->
+                            <div class="control-btn btn-rojo" onclick="cerrarVisor()" title="Cerrar ventana">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M18 6L6 18M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                            <!-- Botón Amarillo (Descargar) -->
+                            <div class="control-btn btn-amarillo" onclick="descargarDocumento()"
+                                title="Descargar documento">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 5v14m0 0l-4-4m4 4l4-4"></path>
+                                </svg>
+                            </div>
+                            <!-- Botón Verde (Abrir / Nueva pestaña) -->
+                            <div class="control-btn btn-verde" onclick="abrirNuevaPestana()"
+                                title="Abrir en nueva pestaña">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7m0 0H9m8 0v8"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <span class="ventana-titulo texto-scramble" id="visor-titulo"
+                            data-texto="visor.exe">visor.exe</span>
+                        <div style="width: 40px;"></div>
+                    </div>
+                    <iframe id="visor-iframe" class="visor-iframe" src=""></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONTACTO / ENLACES -->
+        <section class="seccion-contacto">
+            <span class="titulo-seccion" data-scramble="CONECTA CONMIGO">CONECTA CONMIGO</span>
+            <div class="caja-enlaces">
+                <a href="mailto:davieto1301@gmail.com" class="enlace-footer interactivo">
+                    <div class="icono-footer">
+                        <svg class="icono-svg" viewBox="0 0 24 24">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <span class="etiqueta-footer">Correo</span>
+                </a>
+                <a href="https://github.com/Velascoddavid" class="enlace-footer interactivo">
+                    <div class="icono-footer">
+                        <svg class="icono-svg" viewBox="0 0 24 24">
+                            <path
+                                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="etiqueta-footer">Github</span>
+                </a>
+                <a href="https://drive.google.com/drive/folders/1tUFuPZwocBupLk7E5Rs-qwlLmnbHM7Ih?usp=sharing" class="enlace-footer interactivo">
+                    <div class="icono-footer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                            <path
+                                d="M19.43 12.98L14.7 4.77C14.43 4.3 13.94 4 13.4 4H10.6C10.06 4 9.57 4.3 9.3 4.77L4.57 12.98C4.3 13.45 4.3 14.02 4.57 14.49L5.97 16.91C6.24 17.38 6.73 17.68 7.27 17.68H16.73C17.27 17.68 17.76 17.38 18.03 16.91L19.43 14.49C19.7 14.02 19.7 13.45 19.43 12.98ZM9.12 6H14.88L18.15 11.68H12.39L9.12 6ZM5.76 13.43L8.2 9.19L11.08 14.19L8.64 18.43L5.76 13.43ZM15.36 18.43H9.6L12.48 13.43H18.24L15.36 18.43Z"
+                                fill="currentColor" />
+                        </svg>
+                    </div>
+                    <span class="etiqueta-footer">Portafolio - Drive</span>
+                </a>
+                <a href="https://velascoddavid.github.io/proyecTopicos/index.html" class="enlace-footer interactivo">
+                    <div class="icono-footer">
+                        <svg class="icono-svg" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </div>
+                    <span class="etiqueta-footer">Portafolio - Profesional </span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navegación Expansible -->
+    <div class="contenedor-nav">
+        <nav class="barra-navegacion">
+            <a href="#" class="enlace-nav activo">
+                <svg class="icono-svg" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="nav-texto">Inicio</span>
+            </a>
+            <a href="#seccion-archivos" class="enlace-nav">
+                <svg class="icono-svg" viewBox="0 0 24 24">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="nav-texto">Archivos</span>
+            </a>
+            <a href="#" class="enlace-nav">
+                <svg class="icono-svg" viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="nav-texto">Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // VARIABLE GLOBAL PARA LA RUTA DEL DOCUMENTO ACTUAL
+        let rutaDocumentoActual = "";
+
+        // Efecto Scramble
+        const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%^*_+-=[]{}|;<>?";
+
+        function efectoScramble(elemento) {
+            const textoFinal = elemento.getAttribute('data-texto');
+            if (!textoFinal) return;
+
+            let iteracion = 0;
+            clearInterval(elemento.intervalo);
+
+            elemento.intervalo = setInterval(() => {
+                elemento.innerText = textoFinal
+                    .split("")
+                    .map((letra, index) => {
+                        if (index < iteracion) return textoFinal[index];
+                        return caracteres[Math.floor(Math.random() * caracteres.length)];
+                    })
+                    .join("");
+
+                if (iteracion >= textoFinal.length) clearInterval(elemento.intervalo);
+                iteracion += 1 / 2.5;
+            }, 30);
+        }
+
+        document.querySelectorAll('.texto-scramble').forEach(el => efectoScramble(el));
+
+        // Sistema de Carpetas
+        function abrirCarpeta(id, elemento) {
+            document.querySelectorAll('.carpeta').forEach(c => c.classList.remove('activa'));
+            elemento.classList.add('activa');
+
+            document.querySelectorAll('.lista-trabajos').forEach(l => l.classList.remove('visible'));
+            cerrarVisor();
+
+            const listaSeleccionada = document.getElementById('lista-' + id);
+            listaSeleccionada.classList.add('visible');
+            listaSeleccionada.querySelectorAll('.texto-scramble').forEach(el => efectoScramble(el));
+
+            document.querySelectorAll('.item-trabajo').forEach(item => item.classList.remove('activo'));
+        }
+
+        // Control del Visor y Botones 
+        function mostrarDocumento(tituloVentana, rutaPDF, elementoItem) {
+            document.querySelectorAll('.item-trabajo').forEach(i => i.classList.remove('activo'));
+            elementoItem.classList.add('activo');
+
+            rutaDocumentoActual = rutaPDF;
+
+            const contenedor = document.getElementById('visor-contenedor');
+            const iframe = document.getElementById('visor-iframe');
+            const tituloEl = document.getElementById('visor-titulo');
+
+            contenedor.classList.remove('activo');
+
+            setTimeout(() => {
+                iframe.src = rutaPDF;
+                tituloEl.setAttribute('data-texto', tituloVentana.toUpperCase());
+
+                contenedor.classList.add('activo');
+                efectoScramble(tituloEl);
+
+                contenedor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // Funciones de los botones de colores
+        function cerrarVisor() {
+            rutaDocumentoActual = "";
+            document.getElementById('visor-contenedor').classList.remove('activo');
+            setTimeout(() => {
+                document.getElementById('visor-iframe').src = "";
+                document.querySelectorAll('.item-trabajo').forEach(i => i.classList.remove('activo'));
+            }, 500);
+        }
+
+        function descargarDocumento() {
+            if (!rutaDocumentoActual) return;
+            const link = document.createElement('a');
+            link.href = rutaDocumentoActual;
+            link.download = rutaDocumentoActual.split('/').pop() || 'documento.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function abrirNuevaPestana() {
+            if (!rutaDocumentoActual) return;
+            window.open(rutaDocumentoActual, '_blank');
+        }
+
+        // Tema Claro/Oscuro adaptado
+        const btnTema = document.getElementById('btnTema');
+        const html = document.documentElement;
+
+        btnTema.addEventListener('click', () => {
+            const temaActual = html.getAttribute('data-tema');
+            html.setAttribute('data-tema', temaActual === 'oscuro' ? 'claro' : 'oscuro');
+        });
+
+        // Interacción del Navbar
+        document.querySelectorAll('.enlace-nav').forEach(enlace => {
+            enlace.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.enlace-nav').forEach(nav => nav.classList.remove('activo'));
+                enlace.classList.add('activo');
+            });
+        });
+    </script>
+</body>
+    <footer>
+        <p class="footer__copy">
+        2026 David Velasco&copy;. Todos los derechos reservados al profe Mercado.
+        </p>
+    </footer>
+</html>
