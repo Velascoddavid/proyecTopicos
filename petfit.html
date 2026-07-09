@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>PetFit - UX Redesign</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { nunito: ['Nunito', 'sans-serif'] },
+          colors: {
+            uxBg: '#F8F9FA',
+            uxDark: '#1E1E2F',
+            uxGray: '#8A8D9F',
+            uxPurple: '#8147FF',
+            uxPink: '#FF57A0',
+            uxYellow: '#FFC837',
+            
+            // Category Pills
+            petDog: '#4E89FF',
+            petCat: '#A45BFF',
+            petBird: '#FF64B4',
+            petFish: '#FFB84C',
+            petRabbit: '#FF8A3D'
+          },
+          boxShadow: {
+            soft: '0 15px 40px -10px rgba(0, 0, 0, 0.08)',
+            glowPurple: '0 10px 25px -5px rgba(129, 71, 255, 0.4)',
+            glowYellow: '0 10px 25px -5px rgba(255, 200, 55, 0.5)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Nunito', sans-serif; background-color: #F8F9FA; color: #1E1E2F; }
+    .dark body { background-color: #12121A; color: #F8F9FA; }
+    
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .pressable { transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease; }
+    .pressable:active { transform: scale(0.95); opacity: 0.8; }
+    
+    .nav-btn.active { color: white; background-color: rgba(255,255,255,0.25); }
+    
+    .route-line { stroke-dasharray: 12 10; animation: dash 1.1s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -44; } }
+    
+    .toast-show { transform: translateY(0); opacity: 1; }
+    
+    /* Modals System Reset for Flawless Interaction */
+    .modal-overlay {
+        transition: opacity 0.3s ease;
+    }
+    .modal-card {
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  </style>
+</head>
+<body class="selection:bg-uxPink selection:text-white relative">
+  
+  <!-- Pantalla de Carga (Splash) con gradiente UX -->
+  <div id="splash" class="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-uxPurple to-uxPink">
+    <div class="text-center text-white p-8">
+      <div class="mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-[2.5rem] bg-white/20 shadow-glowPurple backdrop-blur-lg">
+        <i class="fa-solid fa-paw text-6xl text-white animate-pulse"></i>
+      </div>
+      <h1 class="text-5xl font-black tracking-tight mb-2">PetFit</h1>
+      <p id="loadingPhrase" class="text-lg font-bold text-white/80">Iniciando sistema...</p>
+      <div class="mt-8 h-2 w-48 mx-auto overflow-hidden rounded-full bg-black/20">
+        <div id="splashBar" class="h-full w-0 rounded-full bg-white transition-all duration-300 ease-out"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-md min-h-screen overflow-hidden pb-32 relative bg-uxBg dark:bg-[#12121A] transition-colors duration-300">
+    
+    <!-- HEADER ESTILO APP UX -->
+    <header class="px-6 pt-6 pb-2 flex items-center justify-between z-30 relative">
+      <div>
+        <p class="text-sm font-bold text-uxGray dark:text-gray-400">Hola, <span id="userName">Guia</span></p>
+        <button id="petSwitcher" class="pressable flex items-center gap-2 mt-0.5">
+          <h2 id="headerPetName" class="text-2xl font-black text-uxDark dark:text-white">Luna</h2>
+          <div class="bg-black/5 dark:bg-white/10 rounded-full w-6 h-6 flex items-center justify-center text-uxGray"><i class="fa-solid fa-chevron-down text-xs"></i></div>
+        </button>
+      </div>
+      <div class="flex gap-3">
+        <button id="themeToggle" class="pressable w-12 h-12 rounded-[1rem] bg-white dark:bg-white/5 shadow-soft dark:shadow-none flex items-center justify-center text-uxGray dark:text-uxYellow text-lg border border-transparent dark:border-white/10">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <img id="headerPetPhoto" class="w-12 h-12 rounded-[1rem] object-cover shadow-soft border-2 border-white dark:border-white/10" alt="Mascota activa">
+      </div>
+    </header>
+
+    <!-- MAIN VIEWS -->
+    <main class="px-6 pt-4">
+      
+      <!-- DASHBOARD -->
+      <section id="dashboard" class="view active">
+        <!-- Tarjeta de Bienvenida / Balance -->
+        <article class="rounded-[2rem] bg-white dark:bg-[#1E1E2F] p-6 shadow-soft dark:shadow-none border border-transparent dark:border-white/5">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <p class="text-xs font-black uppercase tracking-wider text-uxGray">Balance Energético</p>
+              <h3 class="text-3xl font-black text-uxDark dark:text-white mt-1"><span id="netKcal">0</span> <span class="text-lg text-uxGray">kcal netas</span></h3>
+            </div>
+            <div class="w-14 h-14 rounded-[1.2rem] bg-uxPurple/10 flex items-center justify-center">
+               <i id="petKindIcon" class="fa-solid fa-dog text-2xl text-uxPurple"></i>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-4">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black text-uxGray uppercase">Comidas</span>
+                <span id="foodLabel" class="text-xs font-black text-uxDark dark:text-white">0/0</span>
+              </div>
+              <div class="h-2 rounded-full bg-black/5 dark:bg-white/10"><div id="foodBar" class="h-full rounded-full bg-uxYellow transition-all duration-500"></div></div>
+            </div>
+            <div class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-4">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black text-uxGray uppercase">Actividad</span>
+                <span id="burnedLabel" class="text-xs font-black text-uxDark dark:text-white">0/0</span>
+              </div>
+              <div class="h-2 rounded-full bg-black/5 dark:bg-white/10"><div id="burnedBar" class="h-full rounded-full bg-uxPink transition-all duration-500"></div></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjetas de Accion (Estilo "Categories" del UX) -->
+        <div class="mt-6 flex justify-between items-center">
+            <h3 class="text-lg font-black text-uxDark dark:text-white">Acciones Rápidas</h3>
+        </div>
+        
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <button data-open-meal class="pressable rounded-[2rem] bg-gradient-to-br from-[#FF9A9E] to-[#FECFEF] p-5 text-left text-uxDark shadow-soft">
+            <div class="w-12 h-12 bg-white/40 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm">
+                <i class="fa-solid fa-bowl-food text-2xl text-uxDark"></i>
+            </div>
+            <span class="block text-xl font-black leading-tight">Servir<br>Comida</span>
+          </button>
+          
+          <button id="waterPlus" class="pressable rounded-[2rem] bg-gradient-to-br from-[#8FD3F4] to-[#84FAB0] p-5 text-left text-uxDark shadow-soft">
+            <div class="w-12 h-12 bg-white/40 rounded-full flex items-center justify-center mb-4 backdrop-blur-sm">
+                <i class="fa-solid fa-droplet text-2xl text-uxDark"></i>
+            </div>
+            <span class="block text-xl font-black leading-tight">Sumar<br>Agua</span>
+          </button>
+        </div>
+
+        <!-- Misión (Banner ancho) -->
+        <button id="dailyQuest" class="pressable mt-4 w-full flex min-h-24 items-center justify-between rounded-[2rem] bg-gradient-to-r from-uxPurple to-[#A45BFF] p-6 text-left text-white shadow-glowPurple transition-all">
+          <div>
+            <span class="block text-xs font-black uppercase text-white/70 tracking-wider">Misión Diaria</span>
+            <span id="questText" class="block text-xl font-black leading-tight mt-1">Completa 2 km de paseo</span>
+          </div>
+          <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+             <i id="questIcon" class="fa-solid fa-trophy text-2xl text-uxYellow"></i>
+          </div>
+        </button>
+      </section>
+
+      <!-- ACTIVIDAD -->
+      <section id="activity" class="view">
+        <h2 class="text-3xl font-black text-uxDark dark:text-white">Paseo GPS</h2>
+        
+        <!-- Mapa Moderno -->
+        <div class="relative mt-5 overflow-hidden rounded-[2.5rem] bg-[#E3F2E9] dark:bg-[#1A2620] shadow-soft border border-transparent dark:border-white/5">
+          <svg viewBox="0 0 380 250" class="h-64 w-full" role="img">
+            <defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(41,182,111,0.15)" stroke-width="1.5"/></pattern></defs>
+            <rect width="380" height="250" fill="url(#grid)"/>
+            <path d="M40 180 C80 130 90 80 150 90 S200 170 260 120 300 50 340 70" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="20" stroke-linecap="round"/>
+            <path class="route-line" d="M40 180 C80 130 90 80 150 90 S200 170 260 120 300 50 340 70" fill="none" stroke="#29B66F" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="40" cy="180" r="12" fill="#8147FF"/><circle cx="340" cy="70" r="12" fill="#FFC837"/>
+          </svg>
+          <div class="absolute left-4 top-4 rounded-full bg-white/90 px-4 py-2 font-black text-uxDark text-xs shadow-soft backdrop-blur flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Grabando ruta
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-[2rem] bg-white dark:bg-[#1E1E2F] p-6 text-center shadow-soft border border-transparent dark:border-white/5">
+          <p class="text-xs font-black uppercase tracking-widest text-uxGray">Tiempo Activo</p>
+          <div id="timerDisplay" class="mt-2 text-7xl font-black tabular-nums text-uxDark dark:text-white drop-shadow-sm">00:00</div>
+          
+          <div class="mt-6 grid grid-cols-3 gap-3">
+            <div class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 flex flex-col items-center">
+              <i class="fa-solid fa-map-location-dot text-petDog text-xl mb-1"></i>
+              <p id="distanceMetric" class="font-black text-uxDark dark:text-white">0.0</p>
+              <span class="text-[10px] font-bold text-uxGray">Km</span>
+            </div>
+            <div class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 flex flex-col items-center">
+              <i class="fa-solid fa-fire text-petRabbit text-xl mb-1"></i>
+              <p id="burnMetric" class="font-black text-uxDark dark:text-white">0</p>
+              <span class="text-[10px] font-bold text-uxGray">Kcal</span>
+            </div>
+            <div class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 flex flex-col items-center">
+              <i class="fa-solid fa-stopwatch text-uxPurple text-xl mb-1"></i>
+              <p id="paceMetric" class="font-black text-uxDark dark:text-white">--</p>
+              <span class="text-[10px] font-bold text-uxGray">Ritmo</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="walkToggle" class="pressable mt-5 w-full rounded-[2rem] bg-uxYellow text-uxDark py-5 text-xl font-black shadow-glowYellow">
+          <i class="fa-solid fa-play mr-2"></i> Iniciar paseo
+        </button>
+        <button id="saveRoute" class="pressable mt-3 hidden w-full rounded-[2rem] border-4 border-uxDark dark:border-white bg-transparent py-4 text-xl font-black text-uxDark dark:text-white">
+          <i class="fa-solid fa-floppy-disk mr-2"></i> Guardar recorrido
+        </button>
+      </section>
+
+      <!-- DIETA -->
+      <section id="diet" class="view">
+        <div class="flex items-center justify-between">
+          <h2 class="text-3xl font-black text-uxDark dark:text-white">Nutrición</h2>
+          <button data-open-meal class="pressable w-12 h-12 rounded-[1rem] bg-uxYellow text-uxDark text-xl shadow-glowYellow flex items-center justify-center">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <article class="mt-6 rounded-[2rem] bg-white dark:bg-[#1E1E2F] p-6 shadow-soft relative overflow-hidden border border-transparent dark:border-white/5">
+          <div class="absolute -right-6 -top-6 w-32 h-32 bg-blue-100 dark:bg-blue-900/30 rounded-full blur-3xl"></div>
+          <div class="relative z-10 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-black text-uxGray uppercase tracking-wider">Agua Consumida</p>
+              <h3 class="text-3xl font-black text-uxDark dark:text-white mt-1"><span id="waterMl">0</span><span class="text-lg text-uxGray font-bold"> / <span id="waterGoal">0</span> ml</span></h3>
+            </div>
+            <button id="dietWaterPlus" class="pressable w-14 h-14 rounded-full bg-blue-100 text-blue-500 dark:bg-blue-500/20 dark:text-blue-400 text-xl font-black shadow-sm">
+              <i class="fa-solid fa-glass-water"></i>
+            </button>
+          </div>
+          <div class="relative z-10 mt-5 h-3 rounded-full bg-uxBg dark:bg-black/30"><div id="waterBar" class="h-full rounded-full bg-[#4E89FF] transition-all duration-500"></div></div>
+          <p id="waterTip" class="relative z-10 mt-3 text-xs font-bold text-uxGray"></p>
+        </article>
+
+        <h3 class="mt-8 mb-4 text-xl font-black text-uxDark dark:text-white">Bitácora de Comidas</h3>
+        <div id="mealTimeline" class="grid gap-3"></div>
+      </section>
+
+      <!-- PERFIL -->
+      <section id="profile" class="view">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-3xl font-black text-uxDark dark:text-white">Tu Familia</h2>
+          <button id="openPetModalBtn" class="pressable px-5 py-3 rounded-full bg-uxDark dark:bg-white text-white dark:text-uxDark font-black text-xs shadow-soft">
+            <i class="fa-solid fa-plus mr-1"></i> Añadir
+          </button>
+        </div>
+        
+        <!-- Tarjeta de Perfil Principal -->
+        <article class="rounded-[2.5rem] bg-white dark:bg-[#1E1E2F] p-6 shadow-soft border border-transparent dark:border-white/5">
+          <div class="flex items-center gap-5">
+            <img id="profilePetPhoto" class="h-24 w-24 rounded-[1.5rem] border-2 border-uxBg dark:border-black/50 object-cover shadow-sm">
+            <div>
+              <p class="text-xs font-black uppercase text-uxPurple bg-uxPurple/10 px-3 py-1 rounded-full inline-block mb-1">Activa</p>
+              <h3 id="profilePetName" class="text-3xl font-black text-uxDark dark:text-white leading-none">Luna</h3>
+              <p id="profilePetBreed" class="text-sm font-bold text-uxGray mt-1">Corgi</p>
+            </div>
+          </div>
+          
+          <div class="mt-6 grid grid-cols-3 gap-3">
+            <label class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 text-center border border-transparent dark:border-white/5">
+              <span class="text-[10px] font-black uppercase text-uxGray">Peso (kg)</span>
+              <input id="weightInput" type="number" step="0.1" class="w-full bg-transparent text-center text-xl font-black text-uxDark dark:text-white mt-1 focus:ring-0">
+            </label>
+            <label class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 text-center border border-transparent dark:border-white/5">
+              <span class="text-[10px] font-black uppercase text-uxGray">Edad</span>
+              <input id="ageInput" type="number" step="1" class="w-full bg-transparent text-center text-xl font-black text-uxDark dark:text-white mt-1">
+            </label>
+            <label class="rounded-[1.2rem] bg-uxBg dark:bg-black/30 p-3 text-center border border-transparent dark:border-white/5">
+              <span class="text-[10px] font-black uppercase text-uxGray">Meta (km)</span>
+              <input id="goalInput" type="number" step="0.1" class="w-full bg-transparent text-center text-xl font-black text-uxDark dark:text-white mt-1">
+            </label>
+          </div>
+          <button id="saveProfile" class="pressable mt-4 w-full rounded-full bg-uxYellow text-uxDark py-3 font-black text-sm shadow-glowYellow">
+            Actualizar Datos Biométricos
+          </button>
+        </article>
+
+        <h3 class="mt-8 mb-4 text-xl font-black text-uxDark dark:text-white">Especie</h3>
+        <!-- Categorias Estilo UX (Pills) -->
+        <div id="kindSelector" class="flex overflow-x-auto gap-3 pb-2 no-scrollbar"></div>
+
+      </section>
+    </main>
+
+    <!-- FLOATING BOTTOM NAV (ESTILO PÍLDORA UX) -->
+    <nav class="fixed bottom-6 left-1/2 z-40 flex w-[90%] max-w-[360px] -translate-x-1/2 items-center justify-around rounded-full bg-gradient-to-r from-uxPurple to-uxPink p-2 shadow-glowPurple backdrop-blur-xl">
+      <button data-view="dashboard" class="nav-btn active pressable flex h-14 w-16 flex-col items-center justify-center rounded-full text-white/60 transition-all duration-300">
+        <i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[9px] font-bold uppercase">Inicio</span>
+      </button>
+      <button data-view="activity" class="nav-btn pressable flex h-14 w-16 flex-col items-center justify-center rounded-full text-white/60 transition-all duration-300">
+        <i class="fa-solid fa-location-arrow text-xl mb-1"></i><span class="text-[9px] font-bold uppercase">Paseo</span>
+      </button>
+      <button data-view="diet" class="nav-btn pressable flex h-14 w-16 flex-col items-center justify-center rounded-full text-white/60 transition-all duration-300">
+        <i class="fa-solid fa-bone text-xl mb-1"></i><span class="text-[9px] font-bold uppercase">Dieta</span>
+      </button>
+      <button data-view="profile" class="nav-btn pressable flex h-14 w-16 flex-col items-center justify-center rounded-full text-white/60 transition-all duration-300">
+        <i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[9px] font-bold uppercase">Perfil</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- MODALS SYSTEM (JS controlled for guaranteed functionality) -->
+  
+  <!-- Modal: Cambiar Mascota -->
+  <div id="switcherModal" class="modal-overlay fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none pt-24 px-4">
+    <div class="modal-card w-full max-w-sm rounded-[2rem] bg-white dark:bg-[#1E1E2F] p-6 shadow-2xl scale-95 translate-y-4 border border-transparent dark:border-white/10">
+      <div class="mb-5 flex items-center justify-between">
+        <h3 class="text-2xl font-black text-uxDark dark:text-white">Seleccionar Mascota</h3>
+        <button type="button" class="close-modal pressable w-10 h-10 bg-uxBg dark:bg-black/30 rounded-full flex items-center justify-center text-uxDark dark:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="switcherList" class="grid gap-3 max-h-[60vh] overflow-y-auto pr-1 no-scrollbar"></div>
+    </div>
+  </div>
+
+  <!-- Modal: Comida -->
+  <div id="mealModal" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none p-4 pb-12 sm:pb-4">
+    <form id="mealForm" class="modal-card w-full max-w-md rounded-[2.5rem] bg-white dark:bg-[#1E1E2F] p-7 shadow-2xl scale-95 translate-y-8 border border-transparent dark:border-white/10">
+      <div class="mb-6 flex items-center justify-between">
+        <h3 class="text-2xl font-black text-uxDark dark:text-white">Añadir Ración</h3>
+        <button type="button" class="close-modal pressable w-10 h-10 bg-uxBg dark:bg-black/30 rounded-full flex items-center justify-center text-uxDark dark:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-5">
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Hora</span>
+          <input id="mealTime" type="time" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxYellow outline-none" required>
+        </label>
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Tipo de Alimento</span>
+          <select id="mealType" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxYellow outline-none">
+            <option>Croquetas</option><option>Húmedo / Lata</option><option>Snack / Premio</option><option>Comida Casera</option>
+          </select>
+        </label>
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Gramos (g)</span>
+          <input id="mealGrams" type="number" min="1" step="1" value="50" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxYellow outline-none" required>
+        </label>
+      </div>
+      <button type="submit" class="pressable mt-8 w-full rounded-full bg-uxYellow py-4 text-lg font-black text-uxDark shadow-glowYellow">Guardar Comida</button>
+    </form>
+  </div>
+
+  <!-- Modal: Nueva Mascota -->
+  <div id="petModal" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none p-4 pb-12 sm:pb-4">
+    <form id="petForm" class="modal-card w-full max-w-md rounded-[2.5rem] bg-white dark:bg-[#1E1E2F] p-7 shadow-2xl scale-95 translate-y-8 border border-transparent dark:border-white/10">
+      <div class="mb-6 flex items-center justify-between">
+        <h3 class="text-2xl font-black text-uxDark dark:text-white">Registrar Integrante</h3>
+        <button type="button" class="close-modal pressable w-10 h-10 bg-uxBg dark:bg-black/30 rounded-full flex items-center justify-center text-uxDark dark:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-4 max-h-[55vh] overflow-y-auto pr-2 no-scrollbar">
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Nombre</span>
+          <input id="newPetName" type="text" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxPurple outline-none" placeholder="Ej. Firulais" required>
+        </label>
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Raza</span>
+          <input id="newPetBreed" type="text" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxPurple outline-none" placeholder="Ej. Labrador" required>
+        </label>
+        <div class="grid grid-cols-2 gap-4">
+          <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Peso (kg)</span>
+            <input id="newPetWeight" type="number" min="0.1" step="0.1" value="5" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxPurple outline-none" required>
+          </label>
+          <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Edad</span>
+            <input id="newPetAge" type="number" min="0" step="1" value="1" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxPurple outline-none" required>
+          </label>
+        </div>
+        <label class="block"><span class="text-xs font-black uppercase text-uxGray ml-2">Especie</span>
+          <select id="newPetKind" class="mt-1 w-full rounded-[1.2rem] bg-uxBg dark:bg-black/30 px-5 py-4 font-black text-uxDark dark:text-white focus:ring-2 focus:ring-uxPurple outline-none">
+            <option value="dog">Perro</option><option value="cat">Gato</option><option value="bird">Ave</option><option value="fish">Pez</option><option value="rabbit">Conejo</option>
+          </select>
+        </label>
+      </div>
+      <button type="submit" class="pressable mt-6 w-full rounded-full bg-uxPurple py-4 text-lg font-black text-white shadow-glowPurple">Completar Registro</button>
+    </form>
+  </div>
+
+  <div id="toast" class="fixed left-1/2 top-8 z-[90] w-fit min-w-[280px] -translate-x-1/2 -translate-y-8 rounded-full bg-uxDark px-6 py-3 text-center font-black text-white opacity-0 shadow-2xl transition duration-300"></div>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+    
+    // Categorias basadas en la imagen UX (Colores Pill)
+    const kindMeta = {
+      dog: { label: 'Perro', icon: 'fa-dog', color: 'bg-[#4E89FF]', img: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&q=80' },
+      cat: { label: 'Gato', icon: 'fa-cat', color: 'bg-[#A45BFF]', img: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=300&q=80' },
+      bird: { label: 'Ave', icon: 'fa-dove', color: 'bg-[#FF64B4]', img: 'https://images.unsplash.com/photo-1522926193341-e9ffd686c60f?auto=format&fit=crop&w=300&q=80' },
+      fish: { label: 'Pez', icon: 'fa-fish', color: 'bg-[#FFB84C]', img: 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=300&q=80' },
+      rabbit: { label: 'Conejo', icon: 'fa-carrot', color: 'bg-[#FF8A3D]', img: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=300&q=80' }
+    };
+
+    const state = {
+      theme: localStorage.getItem('petfit-theme') || 'light',
+      activeView: 'dashboard',
+      activePetId: 1,
+      pets: [
+        { id: 1, name: 'Luna', kind: 'dog', breed: 'Corgi', weight: 11.8, age: 4, goalKm: 2.4, foodGoal: 520, burnGoal: 260, waterGoal: 720, meals: [{ time: '08:15', type: 'Croquetas', grams: 110, kcal: 385 }], water: 360, burned: 92, routes: [{ date: 'Hoy 07:20', km: 0.8, kcal: 72, duration: '11:42' }] },
+        { id: 2, name: 'Milo', kind: 'cat', breed: 'Siames', weight: 5.2, age: 3, goalKm: 0.8, foodGoal: 260, burnGoal: 110, waterGoal: 320, meals: [{ time: '09:00', type: 'Húmedo / Lata', grams: 75, kcal: 105 }], water: 150, burned: 36, routes: [] }
+      ],
+      walk: { running: false, seconds: 0, distance: 0, kcal: 0, interval: null }
+    };
+
+    const getPet = () => state.pets.find(p => p.id === state.activePetId);
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const pct = (value, total) => `${clamp((value / total) * 100, 0, 100)}%`;
+    const formatTimer = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    const mealKcal = (type, grams) => Math.round(grams * ({ 'Croquetas': 3.5, 'Húmedo / Lata': 1.4, 'Snack / Premio': 4.2, 'Comida Casera': 2.1 }[type] || 2.4));
+
+    // Toast
+    function toast(message) {
+      const el = $('#toast');
+      el.textContent = message;
+      el.classList.add('toast-show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('toast-show'), 2500);
+    }
+
+    // Modal Controller (Fixed logic for guaranteed interaction)
+    function openModal(id) {
+        const m = $(id);
+        m.classList.remove('opacity-0', 'pointer-events-none');
+        m.classList.add('opacity-100', 'pointer-events-auto');
+        const c = m.querySelector('.modal-card');
+        if(c) {
+            c.classList.remove('scale-95', 'translate-y-8', 'translate-y-4');
+            c.classList.add('scale-100', 'translate-y-0');
+        }
+    }
+    
+    function closeModals() {
+        $$('.modal-overlay').forEach(m => {
+            m.classList.remove('opacity-100', 'pointer-events-auto');
+            m.classList.add('opacity-0', 'pointer-events-none');
+            const c = m.querySelector('.modal-card');
+            if(c) {
+                c.classList.remove('scale-100', 'translate-y-0');
+                // Use translateY 4 for switcher, 8 for bottom sheets
+                c.classList.add('scale-95', m.id === 'switcherModal' ? 'translate-y-4' : 'translate-y-8');
+            }
+        });
+    }
+
+    function setTheme(theme) {
+      state.theme = theme;
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      $('#themeToggle').innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+      localStorage.setItem('petfit-theme', theme);
+    }
+
+    function navigate(view) {
+      state.activeView = view;
+      $$('.view').forEach(v => v.classList.toggle('active', v.id === view));
+      $$('.nav-btn').forEach(btn => {
+        const active = btn.dataset.view === view;
+        if(active){
+            btn.classList.add('active');
+            btn.classList.remove('text-white/60');
+        } else {
+            btn.classList.remove('active');
+            btn.classList.add('text-white/60');
+        }
+      });
+      render();
+    }
+
+    function render() {
+      const pet = getPet();
+      const meta = kindMeta[pet.kind];
+      const food = pet.meals.reduce((sum, meal) => sum + meal.kcal, 0);
+      
+      // Header
+      $('#headerPetPhoto').src = meta.img;
+      $('#headerPetName').textContent = pet.name;
+      
+      // Dashboard
+      $('#petKindIcon').className = `fa-solid ${meta.icon} text-2xl text-uxPurple`;
+      $('#netKcal').textContent = food - pet.burned;
+      $('#burnedLabel').textContent = `${pet.burned}/${pet.burnGoal}`;
+      $('#burnedBar').style.width = pct(pet.burned, pet.burnGoal);
+      $('#foodLabel').textContent = `${food}/${pet.foodGoal}`;
+      $('#foodBar').style.width = pct(food, pet.foodGoal);
+      
+      // Quest
+      const todayRoutes = pet.routes.filter(r => r.date.includes('Hoy') || r.date === 'Ahora');
+      const kmToday = todayRoutes.reduce((sum, r) => sum + r.km, 0);
+      if (kmToday >= pet.goalKm) {
+          $('#dailyQuest').className = 'pressable mt-4 w-full flex min-h-24 items-center justify-between rounded-[2rem] bg-gradient-to-r from-[#29B66F] to-[#128a50] p-6 text-left text-white shadow-[0_10px_25px_-5px_rgba(41,182,111,0.4)] transition-all';
+          $('#questText').textContent = '¡Misión completada!';
+          $('#questIcon').className = 'fa-solid fa-circle-check text-2xl text-white';
+      } else {
+          $('#dailyQuest').className = 'pressable mt-4 w-full flex min-h-24 items-center justify-between rounded-[2rem] bg-gradient-to-r from-uxPurple to-[#A45BFF] p-6 text-left text-white shadow-glowPurple transition-all';
+          $('#questText').textContent = `Completa ${pet.goalKm} km hoy`;
+          $('#questIcon').className = 'fa-solid fa-trophy text-2xl text-uxYellow';
+      }
+
+      // Dieta & Perfil
+      $('#waterMl').textContent = pet.water;
+      $('#waterGoal').textContent = pet.waterGoal;
+      $('#waterBar').style.width = pct(pet.water, pet.waterGoal);
+      $('#waterTip').textContent = pet.water >= pet.waterGoal ? '¡Meta lograda! Hidratación óptima.' : `Faltan ${pet.waterGoal - pet.water} ml para la meta diaria.`;
+      
+      $('#profilePetPhoto').src = meta.img;
+      $('#profilePetName').textContent = pet.name;
+      $('#profilePetBreed').textContent = pet.breed;
+      $('#weightInput').value = pet.weight;
+      $('#ageInput').value = pet.age;
+      $('#goalInput').value = pet.goalKm;
+      
+      renderSwitcher();
+      renderMeals();
+      renderRoutes();
+      renderKindSelector();
+    }
+
+    function renderSwitcher() {
+      $('#switcherList').innerHTML = state.pets.map(p => {
+        const meta = kindMeta[p.kind];
+        const isActive = p.id === state.activePetId;
+        return `<button data-switch-id="${p.id}" class="pressable flex items-center gap-4 rounded-[1.2rem] p-3 ${isActive ? 'bg-uxBg dark:bg-black/30 border border-uxPurple' : 'bg-transparent border border-transparent'} text-left transition-all w-full">
+            <img src="${meta.img}" class="h-14 w-14 rounded-[1rem] object-cover shadow-sm">
+            <span class="font-black flex-1 text-lg text-uxDark dark:text-white">${p.name}</span>
+            ${isActive ? '<i class="fa-solid fa-circle-check text-2xl text-uxPurple"></i>' : ''}
+        </button>`;
+      }).join('');
+      
+      $$('[data-switch-id]').forEach(btn => btn.addEventListener('click', () => {
+        state.activePetId = Number(btn.dataset.switchId);
+        closeModals();
+        toast(`Viendo perfil de ${getPet().name}`);
+        render();
+      }));
+    }
+
+    function renderMeals() {
+      const pet = getPet();
+      $('#mealTimeline').innerHTML = pet.meals.length ? pet.meals
+        .sort((a, b) => b.time.localeCompare(a.time))
+        .map((m, i) => `<div class="flex items-center gap-4 rounded-[1.5rem] bg-uxBg dark:bg-black/30 p-4 border border-transparent dark:border-white/5">
+          <div class="grid h-12 w-12 place-items-center rounded-[1rem] bg-uxYellow text-uxDark text-xl shadow-sm"><i class="fa-solid fa-utensils"></i></div>
+          <div class="flex-1"><p class="text-lg font-black text-uxDark dark:text-white">${m.type}</p><p class="text-sm font-bold text-uxGray">${m.time} · ${m.grams} g · ${m.kcal} kcal</p></div>
+          <button data-meal-index="${i}" class="delete-meal pressable grid h-10 w-10 place-items-center rounded-full bg-white dark:bg-white/10 text-uxDark dark:text-white shadow-sm" aria-label="Eliminar comida"><i class="fa-solid fa-trash"></i></button>
+        </div>`).join('') : `<div class="rounded-[1.5rem] bg-uxBg dark:bg-black/30 p-6 text-center font-black text-uxGray">Aún no hay comidas registradas hoy.</div>`;
+      
+      $$('.delete-meal').forEach(btn => btn.addEventListener('click', () => {
+        pet.meals.splice(Number(btn.dataset.mealIndex), 1);
+        toast('Comida eliminada');
+        render();
+      }));
+    }
+
+    function renderRoutes() {
+      const pet = getPet();
+      $('#routeHistory').innerHTML = pet.routes.length ? pet.routes.map(r => `<div class="flex items-center gap-4 rounded-[1.5rem] bg-uxBg dark:bg-black/30 p-4 border border-transparent dark:border-white/5">
+        <div class="grid h-12 w-12 place-items-center rounded-[1rem] bg-uxPurple text-white text-xl shadow-sm"><i class="fa-solid fa-route"></i></div>
+        <div class="flex-1"><p class="text-lg font-black text-uxDark dark:text-white">${r.km.toFixed(2)} km · ${r.duration}</p><p class="text-sm font-bold text-uxGray">${r.date} · ${r.kcal} kcal quemadas</p></div>
+      </div>`).join('') : `<div class="rounded-[1.5rem] bg-uxBg dark:bg-black/30 p-6 text-center font-black text-uxGray">Inicia un paseo y guárdalo aquí.</div>`;
+    }
+
+    // UX Style Pills for Pet Kinds
+    function renderKindSelector() {
+      const pet = getPet();
+      $('#kindSelector').innerHTML = Object.entries(kindMeta).map(([key, meta]) => {
+        const isActive = pet.kind === key;
+        return `<button data-kind="${key}" class="kind-btn pressable flex-shrink-0 flex items-center gap-2 rounded-full px-5 py-3 ${isActive ? `${meta.color} text-white shadow-glowPurple` : 'bg-white dark:bg-white/5 text-uxDark dark:text-white shadow-sm border border-transparent dark:border-white/10'} transition-all">
+            <i class="fa-solid ${meta.icon} text-lg"></i><span class="font-black text-sm">${meta.label}</span>
+        </button>`;
+      }).join('');
+      
+      $$('.kind-btn').forEach(btn => btn.addEventListener('click', () => {
+        pet.kind = btn.dataset.kind;
+        autoGoals('balanced');
+        toast(`Especie actualizada a ${kindMeta[pet.kind].label}`);
+        render();
+      }));
+    }
+
+    function autoGoals(mode) {
+      const pet = getPet();
+      const base = pet.kind === 'dog' ? 0.22 : pet.kind === 'cat' ? 0.11 : 0.05;
+      const factor = { cozy: .65, balanced: 1, athlete: 1.45 }[mode];
+      pet.goalKm = Number((pet.weight * base * factor).toFixed(1));
+      pet.burnGoal = Math.round(pet.weight * 20 * factor);
+      pet.foodGoal = Math.round(pet.weight * (pet.kind === 'cat' ? 48 : 44));
+      pet.waterGoal = Math.round(pet.weight * 60);
+    }
+
+    // Tracking
+    function updateWalkUI() {
+      $('#timerDisplay').textContent = formatTimer(state.walk.seconds);
+      $('#distanceMetric').textContent = state.walk.distance.toFixed(2);
+      $('#burnMetric').textContent = state.walk.kcal;
+      $('#paceMetric').textContent = state.walk.distance > 0 ? `${Math.max(4, state.walk.seconds / 60 / state.walk.distance).toFixed(1)}` : '--';
+      
+      $('#walkToggle').innerHTML = state.walk.running ? '<i class="fa-solid fa-pause mr-2"></i> Pausar paseo' : '<i class="fa-solid fa-play mr-2"></i> Iniciar paseo';
+      if(state.walk.running){
+        $('#walkToggle').classList.replace('bg-uxYellow', 'bg-uxPink');
+        $('#walkToggle').classList.replace('shadow-glowYellow', 'shadow-glowPurple');
+        $('#walkToggle').classList.replace('text-uxDark', 'text-white');
+      } else {
+        $('#walkToggle').classList.replace('bg-uxPink', 'bg-uxYellow');
+        $('#walkToggle').classList.replace('shadow-glowPurple', 'shadow-glowYellow');
+        $('#walkToggle').classList.replace('text-white', 'text-uxDark');
+      }
+      
+      $('#saveRoute').classList.toggle('hidden', state.walk.running || state.walk.seconds === 0);
+    }
+
+    function toggleWalk() {
+      if (state.walk.running) {
+        clearInterval(state.walk.interval);
+        state.walk.running = false;
+        toast('Paseo pausado.');
+      } else {
+        state.walk.running = true;
+        state.walk.interval = setInterval(() => {
+          const pet = getPet();
+          state.walk.seconds += 1;
+          state.walk.distance += (pet.kind === 'dog' ? 0.0024 : 0.0012) + Math.random() * 0.0012;
+          state.walk.kcal = Math.round(state.walk.distance * pet.weight * 7.2);
+          updateWalkUI();
+        }, 1000);
+        toast('Paseo iniciado.');
+      }
+      updateWalkUI();
+    }
+
+    function saveRoute() {
+      if (state.walk.seconds < 5) return toast('Necesitas al menos 5 segundos de ruta.');
+      const pet = getPet();
+      pet.routes.unshift({ date: 'Ahora', km: state.walk.distance, kcal: state.walk.kcal, duration: formatTimer(state.walk.seconds) });
+      pet.burned += state.walk.kcal;
+      state.walk = { running: false, seconds: 0, distance: 0, kcal: 0, interval: null };
+      toast('Ruta guardada en el historial');
+      updateWalkUI();
+      render();
+    }
+
+    function addWater() {
+      const pet = getPet();
+      pet.water = clamp(pet.water + 120, 0, pet.waterGoal + 360);
+      toast('+120 ml de agua registrados');
+      render();
+    }
+
+    // Initialize
+    function boot() {
+      setTheme(state.theme);
+      
+      // Splash logic
+      document.addEventListener('DOMContentLoaded', () => {
+        let p = 0;
+        let pInt = setInterval(() => { 
+            p += Math.random()*20; 
+            if(p>100) p=100;
+            $('#splashBar').style.width = p + '%';
+            if(p===100){
+                clearInterval(pInt);
+                setTimeout(() => {
+                    $('#splash').style.opacity = '0';
+                    setTimeout(()=> $('#splash').style.display = 'none', 300);
+                }, 400);
+            }
+        }, 300);
+      });
+
+      // Events
+      $$('.nav-btn').forEach(btn => btn.addEventListener('click', () => navigate(btn.dataset.view)));
+      $('#themeToggle').addEventListener('click', () => setTheme(state.theme === 'dark' ? 'light' : 'dark'));
+      
+      $('#petSwitcher').addEventListener('click', () => openModal('#switcherModal'));
+      $('#openPetModalBtn').addEventListener('click', () => openModal('#petModal'));
+      $$('[data-open-meal]').forEach(btn => btn.addEventListener('click', () => openModal('#mealModal')));
+      
+      $$('.close-modal').forEach(btn => btn.addEventListener('click', closeModals));
+      $$('.modal-overlay').forEach(bg => bg.addEventListener('click', (e) => {
+          if (e.target === bg) closeModals();
+      }));
+
+      $('#waterPlus').addEventListener('click', addWater);
+      $('#dietWaterPlus').addEventListener('click', addWater);
+      $('#dailyQuest').addEventListener('click', () => navigate('activity'));
+      $('#walkToggle').addEventListener('click', toggleWalk);
+      $('#saveRoute').addEventListener('click', saveRoute);
+
+      // Forms
+      $('#mealForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pet = getPet();
+        const type = $('#mealType').value;
+        const grams = Number($('#mealGrams').value);
+        pet.meals.push({ time: $('#mealTime').value, type, grams, kcal: mealKcal(type, grams) });
+        closeModals();
+        toast('Comida registrada exitosamente');
+        render();
+        e.target.reset();
+        $('#mealTime').value = new Date().toTimeString().slice(0, 5);
+      });
+      $('#mealTime').value = new Date().toTimeString().slice(0, 5);
+
+      $('#petForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pet = {
+          id: Date.now(),
+          name: $('#newPetName').value.trim(),
+          kind: $('#newPetKind').value,
+          breed: $('#newPetBreed').value.trim(),
+          weight: Number($('#newPetWeight').value),
+          age: Number($('#newPetAge').value),
+          goalKm: 1, foodGoal: 300, burnGoal: 140, waterGoal: 400,
+          meals: [], water: 0, burned: 0, routes: []
+        };
+        state.pets.push(pet);
+        state.activePetId = pet.id;
+        autoGoals('balanced');
+        e.target.reset();
+        closeModals();
+        toast(`¡${pet.name} se unió a la familia!`);
+        render();
+      });
+
+      $('#saveProfile').addEventListener('click', () => {
+        const pet = getPet();
+        pet.weight = Number($('#weightInput').value);
+        pet.age = Number($('#ageInput').value);
+        pet.goalKm = Number($('#goalInput').value);
+        pet.waterGoal = Math.round(pet.weight * 60);
+        toast('Datos actualizados');
+        render();
+      });
+
+      render();
+      updateWalkUI();
+    }
+
+    boot();
+  </script>
+</body>
+</html>
